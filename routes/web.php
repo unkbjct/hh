@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\GetControllers\SingleController as SingleViews;
+use App\Http\Controllers\PostController\PersonalController as PersonalCore;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [SingleViews::class, 'welcome'])->name('home');
+
+Route::get('/signup', [SingleViews::class, 'signup'])->name('signup');
+
+Route::get('/login', [SingleViews::class, 'login'])->name('login');
+
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect()->back();
+})->name('logout');
+
+Route::group(['prefix' => 'api'], function () {
+    Route::post('/signup', [PersonalCore::class, 'signup'])->name('api.signup');
+    Route::post('/login', [PersonalCore::class, 'login'])->name('api.login');
 });
