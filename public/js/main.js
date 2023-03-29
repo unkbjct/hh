@@ -14,6 +14,27 @@ $(document).ready(() => {
             $(this).removeClass("is-invalid");
         }
     })
+    $("#city-input").on("input", function () {
+        if (!this.value) return;
+        // alert()
+        $.ajax({
+            url: `${window.location.protocol}//${window.location.hostname}/api/city/find`,
+            method: 'GET',
+            data: {
+                city: this.value,
+            },
+            success: function (cities) {
+                // console.log(cities)
+                $("#cities-list")[0].innerHTML = null;
+                cities.forEach(city => {
+                    $("#cities-list").append(`<a href="${window.location.protocol}//${window.location.hostname}/api/city/${city.id}/set" class="list-group-item list-group-item-action">${city.address}</a>`);
+                });
+            },
+            error: function (e) {
+                console.log(e)
+            }
+        })
+    })
 })
 
 const showMessage = (options) => {

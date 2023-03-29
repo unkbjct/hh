@@ -17,18 +17,8 @@
 <body>
     <div class="wrapper">
         <header>
-            <nav class="navbar navbar-expand-lg p-0">
-                <div class="container">
-                    <ul class="navbar-nav me-auto mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                href="#">Великий новгород</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
             <nav class="navbar navbar-expand-lg">
-                <div class="container">
+                <div class="container-fluid">
                     <a class="navbar-brand" href="{{ route('home') }}">WantWork</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -38,9 +28,6 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Великий новгород</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link" href="#">Найти работу</a>
                             </li>
                             <li class="nav-item">
@@ -48,6 +35,23 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav mb-lg-0">
+                            <li class="nav-item">
+                                @if (Cookie::get('city'))
+                                    @if (Cookie::get('city') == 'incorrect')
+                                        <a class="nav-link text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" href="#">Не удалось определить
+                                            город</a>
+                                    @else
+                                        <a class="nav-link text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                            href="#">{{ json_decode(Cookie::get('city'))->title }}</a>
+                                    @endif
+                                @else
+                                    <script>
+                                        window.location = '{{ route('api.city.define') }}';
+                                    </script>
+                                @endif
+                            </li>
                             @if (!Auth::check())
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page"
@@ -63,7 +67,7 @@
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         {{ Auth::user()->name }}
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         <li><a class="dropdown-item" href="#">{{ Auth::user()->surname }}
                                                 {{ Auth::user()->name }}</a></li>
                                         <li>
@@ -85,18 +89,21 @@
         </header>
         <main class="py-5 bg-secondary-subtle">
             <div class="modal fade" id="exampleModal">
-                <div class="modal-dialog modal-xl">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Выберите свой город</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
-                            ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <div class="mb-4">
+                                <input type="text" id="city-input" placeholder="Начниете вводить название города"
+                                    class="form-control">
+                                <div class="form-text">Выберите город из списка</div>
+                            </div>
+                            <ul class="list-group" id="cities-list">
+
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GetControllers\ApiController as ApiGet;
 use App\Http\Controllers\GetControllers\SingleController as SingleViews;
 use App\Http\Controllers\PostController\PersonalController as PersonalCore;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,7 @@ Route::get('/signup', [SingleViews::class, 'signup'])->name('signup');
 
 Route::get('/login', [SingleViews::class, 'login'])->name('login');
 
+
 Route::get('/logout', function () {
     Auth::logout();
     return redirect()->back();
@@ -30,4 +32,7 @@ Route::get('/logout', function () {
 Route::group(['prefix' => 'api'], function () {
     Route::post('/signup', [PersonalCore::class, 'signup'])->name('api.signup');
     Route::post('/login', [PersonalCore::class, 'login'])->name('api.login');
+    Route::get('/city/find', [ApiGet::class, 'cityFind'])->name('api.city.find');
+    Route::get('/city/{city}/set', [ApiGet::class, 'citySet'])->name('api.city.set');
+    Route::get('/city/define', [ApiGet::class, 'cityDefine'])->name('api.city.define');
 });
