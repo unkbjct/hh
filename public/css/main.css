@@ -13,3 +13,32 @@ body {
 main {
     flex: 1 1 auto;
 }
+
+
+.title-link {
+    font-size: 20px;
+}
+
+.title-link:visited {
+    color: var(--bs-purple);
+    /* color: rgba(255, 0, 200); */
+}
+
+.title-link:hover {
+    color: var(--bs-danger);
+}
+
+.favorite-btn {
+    width: 26px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity linear .1s, fill linear .1s;
+}
+
+.card:hover .favorite-btn {
+    opacity: 1;
+}
+
+.favorite-btn:hover {
+    fill: rgba(255, 0, 200);
+}

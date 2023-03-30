@@ -35,7 +35,7 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav mb-lg-0">
-                            <li class="nav-item">
+                            <li class="nav-item me-5">
                                 @if (Cookie::get('city'))
                                     @if (Cookie::get('city') == 'incorrect')
                                         <a class="nav-link text-danger" data-bs-toggle="modal"
@@ -43,8 +43,10 @@
                                             город</a>
                                     @else
                                         <a class="nav-link text-danger" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal"
-                                            href="#">{{ json_decode(Cookie::get('city'))->title }}</a>
+                                            data-bs-target="#exampleModal" href="#">
+                                            <div class="border-bottom border-danger border-1">
+                                                {{ json_decode(Cookie::get('city'))->title }}</div>
+                                        </a>
                                     @endif
                                 @else
                                     <script>
@@ -57,7 +59,7 @@
                                     <a class="nav-link" aria-current="page"
                                         href="{{ route('login') }}">Авторизоваться</a>
                                 </li>
-                                <li class="nav-item ms-3">
+                                <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="{{ route('signup') }}">Создать
                                         аккаунт</a>
                                 </li>
@@ -170,7 +172,7 @@
                                     <label for="newsletter1" class="visually-hidden">Email address</label>
                                     <input id="newsletter1" type="text" class="form-control"
                                         placeholder="Email address">
-                                    <button class="btn btn-primary" type="button">Subscribe</button>
+                                    <button class="btn btn-danger" type="button">Subscribe</button>
                                 </div>
                             </form>
                         </div>
@@ -198,6 +200,7 @@
         </footer>
     </div>
 
+    @yield('styles')
     @yield('scripts')
 </body>
 

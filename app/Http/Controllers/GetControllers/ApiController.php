@@ -12,7 +12,9 @@ class ApiController extends Controller
     {
         $cities = City::where("city", "LIKE", "%{$request->city}%")
             ->orWhere("region", "LIKE", "%{$request->city}%")
-            ->limit(10)
+            ->orWhere("address", "LIKE", "%{$request->city}%")
+            ->limit(20)
+            ->orderBy("address")
             ->get();
         return $cities;
     }
