@@ -17,6 +17,17 @@ main {
 
 .title-link {
     font-size: 20px;
+    font-weight: 600;
+}
+
+.secondary-title-link {
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(150, 150, 150, 1);
+}
+
+.secondary-title-link:hover {
+    color: var(--bs-primary);
 }
 
 .title-link:visited {

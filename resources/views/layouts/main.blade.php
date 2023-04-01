@@ -70,12 +70,14 @@
                                         {{ Auth::user()->name }}
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">{{ Auth::user()->surname }}
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('personal') }}">{{ Auth::user()->surname }}
                                                 {{ Auth::user()->name }}</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" href="#">Мое резюме</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('personal.resume.list') }}">Мое
+                                                резюме</a></li>
                                         <li><a class="dropdown-item" href="#">Мои вакансии</a></li>
                                         <li>
                                             <hr class="dropdown-divider">

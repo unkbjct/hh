@@ -46,4 +46,6 @@ class ApiController extends Controller
             return redirect()->back()->withCookie(cookie()->forever('city', 'incorrect'));
         }
     }
+
+
 }
