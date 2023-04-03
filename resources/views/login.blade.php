@@ -15,6 +15,7 @@
                     passwd: $("#passwd").val(),
                 },
                 success: function(e) {
+                    // console.log(e)
                     window.location = e.data.url
                 },
                 error: function(e) {

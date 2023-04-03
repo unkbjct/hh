@@ -92,6 +92,8 @@
             </nav>
         </header>
         <main class="py-5 bg-secondary-subtle">
+
+
             <div class="modal fade" id="exampleModal">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -112,6 +114,9 @@
                     </div>
                 </div>
             </div>
+
+            @yield('modals')
+
             @yield('main')
         </main>
         <footer class="border-top">

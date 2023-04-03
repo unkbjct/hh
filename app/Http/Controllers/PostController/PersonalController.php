@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PersonalController extends Controller
 {
@@ -33,6 +34,7 @@ class PersonalController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->password = $request->passwd;
+        $user->api_token = Str::random(60);
         $user->save();
 
         if (Auth::attempt(['password' => $request->passwd, 'email' => $request->email])) {
@@ -57,7 +59,8 @@ class PersonalController extends Controller
             'passwd' => '',
         ]);
 
-        if (Auth::attempt(['password' => $request->passwd, 'email' => $request->login]) || Auth::attempt(['password' => $request->passwd, 'phone' => $request->login])) {
+        if (Auth::attempt(['password' => $request->passwd, 'email' => $request->login], true) || Auth::attempt(['password' => $request->passwd, 'phone' => $request->login], true)) {
+            // dd(Auth::user()->remeber_token);
             return response([
                 'status' => 'success',
                 'data' => [
@@ -136,7 +139,7 @@ class PersonalController extends Controller
                 ]
             ], 422);
         }
-        
+
         $user = User::find(Auth::user()->id);
         $user->password = $request->newPasswd;
         $user->save();

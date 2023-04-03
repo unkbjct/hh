@@ -49,7 +49,17 @@ Route::group(['prefix' => 'api'], function () {
     Route::group(['prefix' => 'resume'], function () {
         Route::post('/resumne/create', [ResumeCore::class, 'create'])->name('api.resume.create');
         Route::group(['prefix' => 'edit'], function () {
+            Route::post('/', [ResumeCore::class, 'edit'])->name('api.resume.edit');
             Route::post('/personal', [ResumeCore::class, 'personal'])->name('api.resume.edit.personal');
+            Route::post('/contacts', [ResumeCore::class, 'contacts'])->name('api.resume.edit.contacts');
+            Route::post('/job', [ResumeCore::class, 'job'])->name('api.resume.edit.job');
+            Route::post('/experience', [ResumeCore::class, 'experience'])->name('api.resume.edit.experience');
+            Route::post('/experience/item', [ResumeCore::class, 'experienceItem'])->name('api.resume.edit.experience.item');
+            Route::post('/experience/item/remove', [ResumeCore::class, 'experienceItemRemove'])->name('api.resume.edit.experience.item.remove');
+            Route::post('/education/item', [ResumeCore::class, 'educationItem'])->name('api.resume.edit.education.item');
+            Route::post('/education/item/edit', [ResumeCore::class, 'educationItemEdit'])->name('api.resume.edit.education.item.edit');
+            Route::post('/education/item/remove', [ResumeCore::class, 'educationItemRemove'])->name('api.resume.edit.education.item.remove');
         });
+        Route::post('/publish', [ResumeCore::class, 'publish'])->name('api.resume.publish');
     });
 });
