@@ -10,6 +10,9 @@
         let token = '{{ Auth::user()->api_token }}'
 
         $(".input-resume").on("change", function() {
+            if (this.name == 'has_car') {
+                this.value = (this.checked) ? 1 : 0;
+            }
             console.log(this.name, this.value)
             $.ajax({
                 url: "{{ route('api.resume.edit') }}",
@@ -258,11 +261,190 @@
                     token: token,
                 },
                 success: function(e) {
-                    const publishedModal = new bootstrap.Modal(document.getElementById('published-modal'))
-                    document.getElementById('published-modal').addEventListener("hidden.bs.modal", function() {
-                        window.location = e.data.url
-                    })
+                    const publishedModal = new bootstrap.Modal(document.getElementById(
+                        'published-modal'))
+                    document.getElementById('published-modal').addEventListener("hidden.bs.modal",
+                        function() {
+                            window.location = e.data.url
+                        })
                     publishedModal.show();
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+        })
+
+        $(".append-item").click(function() {
+            $("." + this.dataset.view).removeClass("visually-hidden")
+            $("." + this.dataset.view).appendTo("#append-list")
+            $(this).addClass("visually-hidden")
+        })
+
+        $(".btn-hide-additional").click(function() {
+            $("#" + this.dataset.btnId).removeClass("visually-hidden")
+            $("." + this.dataset.view).addClass("visually-hidden")
+
+            let url = (this.dataset.urlClear === 'has_car') ? "{{ route('api.resume.edit') }}" : this.dataset
+                .urlClear;
+            let data = (this.dataset.urlClear === 'has_car') ? {
+                resumeId: resumeId,
+                token: token,
+                has_car: 0,
+            } : {
+                resumeId: resumeId,
+                token: token,
+            };
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                },
+                success: function(e) {
+                    location.reload();
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+
+        })
+
+        $(".input-employments").on('change', function() {
+            let array = [];
+            $(".input-employments").each((index, element) => {
+                if (element.checked) array.push(element.value)
+            })
+            console.log(array)
+            $.ajax({
+                url: "{{ route('api.resume.edit.employments') }}",
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                    employments: array,
+                },
+                success: function(e) {
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+        })
+
+
+        $(".input-drive-category").on('change', function() {
+            let array = [];
+            $(".input-drive-category").each((index, element) => {
+                if (element.checked) array.push(element.value)
+            })
+            console.log(array)
+            $.ajax({
+                url: "{{ route('api.resume.edit.driving-categories') }}",
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                    categories: array,
+                },
+                success: function(e) {
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+        })
+
+        $(".input-schedules").on('change', function() {
+            let array = [];
+            $(".input-schedules").each((index, element) => {
+                if (element.checked) array.push(element.value)
+            })
+            console.log(array)
+            $.ajax({
+                url: "{{ route('api.resume.edit.schedules') }}",
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                    schedules: array,
+                },
+                success: function(e) {
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+        })
+
+        $("#add-skill").click(function() {
+            let value = $("#input-skill").val();
+            let repeat = false;
+            $(".skills-item").each((index, element) => {
+                if ($(element).children()[0].textContent == value) repeat = true;
+            })
+            if (repeat) return;
+
+            $("#skills-list").prepend(
+                `<div class="skills-item shadow-sm bg-white mb-1 me-1 p-2 rounded d-flex"><div class="me-2">${$("#input-skill").val()}</div><button type="button" id="add-skill" class="btn-close" aria-label="Close"></button></div>`
+            )
+
+            let skills = [];
+            $(".skills-item").each((index, element) => {
+                skills.push($(element).children()[0].textContent)
+            })
+
+            $.ajax({
+                url: "{{ route('api.resume.edit.skills') }}",
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                    skills: skills,
+                },
+                success: function(e) {
+                    console.log(e)
+                },
+                error: function(e) {
+                    console.log(e)
+                    alert('Что-то пошло не так \nПопробуйте позже')
+                }
+            })
+
+            // console.log()
+
+        })
+
+        $("#skills-list").click(function(e) {
+            if (!e.target.classList.contains("btn-close")) return;
+            $(e.target).parent().remove()
+
+            let skills = [];
+            $(".skills-item").each((index, element) => {
+                skills.push($(element).children()[0].textContent)
+            })
+
+            $.ajax({
+                url: "{{ route('api.resume.edit.skills') }}",
+                method: 'POST',
+                data: {
+                    resumeId: resumeId,
+                    token: token,
+                    skills: skills,
+                },
+                success: function(e) {
                     console.log(e)
                 },
                 error: function(e) {
@@ -696,16 +878,146 @@
             <div class="d-flex mb-3">
                 <div class="h5">Другая важная информация</div>
             </div>
+            <div class="row gy-4 mb-3" id="append-list">
+                <div class="col-lg-2 employment-view @if ($resume->employments->isEmpty()) visually-hidden @endif">
+                    <div>Занятость</div>
+                </div>
+                <div class="col-lg-5 employment-view @if ($resume->employments->isEmpty()) visually-hidden @endif">
+                    @foreach ($employments as $employ)
+                        <div class="form-check">
+                            <input class="form-check-input input-employments"
+                                @foreach ($resume->employments as $reEmploy) @if ($reEmploy->employment === $employ->id) checked @endif @endforeach
+                                type="checkbox" name="employments[]" value="{{ $employ->id }}"
+                                id="employment-{{ $employ->id }}">
+                            <label class="form-check-label" for="employment-{{ $employ->id }}">
+                                {{ $employ->employment }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="col-lg-5 employment-view @if ($resume->employments->isEmpty()) visually-hidden @endif">
+                    <div><button class="btn btn-sm btn-primary btn-hide-additional" data-btn-id="add-employment"
+                            data-url-clear="{{ route('api.resume.edit.employments.clear') }}"
+                            data-view="employment-view">Отмена</button></div>
+                </div>
+                <div class="col-lg-2 schedule-view @if ($resume->schedules->isEmpty()) visually-hidden @endif">
+                    <div>График работы</div>
+                </div>
+                <div class="col-lg-5 schedule-view @if ($resume->schedules->isEmpty()) visually-hidden @endif">
+                    @foreach ($schedules as $schedule)
+                        <div class="form-check">
+                            <input class="form-check-input input-schedules" type="checkbox" name="schedules[]"
+                                @foreach ($resume->schedules as $reSchedule) @if ($reSchedule->schedule === $schedule->id) checked @endif @endforeach
+                                value="{{ $schedule->id }}" id="schedules-{{ $schedule->id }}">
+                            <label class="form-check-label" for="schedules-{{ $schedule->id }}">
+                                {{ $schedule->schedule }}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="col-lg-5 schedule-view @if ($resume->schedules->isEmpty()) visually-hidden @endif">
+                    <div><button class="btn btn-sm btn-primary btn-hide-additional" data-btn-id="add-schedule"
+                            data-url-clear="{{ route('api.resume.edit.schedules.clear') }}"
+                            data-view="schedule-view">Отмена</button></div>
+                </div>
+                <div class="col-lg-2 driving-categories-view @if ($resume->drivingCategories->isEmpty()) visually-hidden @endif">
+                    <div>Категория прав</div>
+                </div>
+                <div class="col-lg-5 driving-categories-view @if ($resume->drivingCategories->isEmpty()) visually-hidden @endif">
+                    <div>
+                        <div class="btn-group">
+                            @foreach ($drivingCategories as $category)
+                                <input type="checkbox" class="btn-check input-drive-category" name="driveCategories[]"
+                                    @foreach ($resume->drivingCategories as $reDrivingCategory) @if ($reDrivingCategory->category === $category->id) checked @endif @endforeach
+                                    value="{{ $category->id }}" id="drive-category-{{ $category->id }}"
+                                    autocomplete="off">
+                                <label class="btn btn-outline-primary"
+                                    for="drive-category-{{ $category->id }}">{{ $category->category }}</label>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 driving-categories-view @if ($resume->drivingCategories->isEmpty()) visually-hidden @endif">
+                    <div><button class="btn btn-sm btn-primary btn-hide-additional" data-btn-id="add-drive-category"
+                            data-url-clear="{{ route('api.resume.edit.driving-categories.clear') }}"
+                            data-view="driving-categories-view">Отмена</button></div>
+                </div>
+                <div class="col-lg-2 has-car-view @if (!$resume->has_car) visually-hidden @endif">
+                    <div>Наличие авто</div>
+                </div>
+                <div class="col-lg-5 has-car-view @if (!$resume->has_car) visually-hidden @endif">
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input input-resume" @if ($resume->has_car) checked @endif
+                                name="has_car" type="checkbox" id="has-car">
+                            <label class="form-check-label" for="has-car">Есть личный автомобиль</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 has-car-view @if (!$resume->has_car) visually-hidden @endif">
+                    <div><button class="btn btn-sm btn-primary btn-hide-additional" data-btn-id="add-employment"
+                            data-url-clear="has_car" data-view="has-car-view">Отмена</button></div>
+                </div>
+                <div class="col-lg-2 skills-view @if ($resume->skills->isEmpty()) visually-hidden @endif">
+                    <div>Ключевые навыки</div>
+                </div>
+                <div class="col-lg-5 skills-view @if ($resume->skills->isEmpty()) visually-hidden @endif">
+                    <div>
+                        <div class="input-group mb-2">
+                            <input id="input-skill" type="text" class="form-control"
+                                placeholder="Введие навык и добавьте его">
+                            <button id="add-skill" class="btn btn-secondary">+</button>
+                        </div>
+                        <div id="skills-list" class="d-flex flex-wrap">
+                            @foreach ($resume->skills as $skill)
+                                <div class="skills-item shadow-sm bg-white mb-1 me-1 p-2 rounded d-flex">
+                                    <div class="me-2">{{ $skill->skill }}</div>
+                                    <button type="button" id="add-skill"class="btn-close" aria-label="Close"></button>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 skills-view @if ($resume->skills->isEmpty()) visually-hidden @endif">
+                    <div><button class="btn btn-sm btn-primary btn-hide-additional" data-btn-id="add-skills"
+                            data-url-clear="{{ route('api.resume.edit.skills.clear') }}"
+                            data-view="skills-view">Отмена</button></div>
+                </div>
+            </div>
+
             <div class="row gy-4">
                 <div class="col-lg-2">
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-wrap">
-                        <div><button class="btn btn-outline-danger me-1 mb-1 btn-sm">Переезд</button></div>
-                        <div><button class="btn btn-outline-danger me-1 mb-1 btn-sm">Занятость</button></div>
-                        <div><button class="btn btn-outline-danger me-1 mb-1 btn-sm">Разрешение на работу</button></div>
-                        <div><button class="btn btn-outline-danger me-1 mb-1 btn-sm">Категория прав</button></div>
-                        <div><button class="btn btn-outline-danger me-1 mb-1 btn-sm">Наличине авто</button></div>
+                        <div>
+                            <button
+                                class="btn btn-outline-danger me-1 mb-1 btn-sm append-item @if ($resume->employments && $resume->employments->isNotEmpty()) visually-hidden @endif"
+                                data-view="employment-view" id="add-employment">Занятость</button>
+                        </div>
+                        <div>
+                            <button
+                                class="btn btn-outline-danger me-1 mb-1 btn-sm append-item @if ($resume->schedules && $resume->schedules->isNotEmpty()) visually-hidden @endif"
+                                data-view="schedule-view" id="add-schedule">График
+                                работы</button>
+                        </div>
+                        <div>
+                            <button
+                                class="btn btn-outline-danger me-1 mb-1 btn-sm append-item @if ($resume->drivingCategories && $resume->drivingCategories->isNotEmpty()) visually-hidden @endif"
+                                data-view="driving-categories-view" id="add-drive-category">Категория прав</button>
+                        </div>
+                        <div>
+                            <button
+                                class="btn btn-outline-danger me-1 mb-1 btn-sm append-item  @if ($resume->has_car) visually-hidden @endif"
+                                data-view="has-car-view" id="add-has-car">Наличие
+                                авто</button>
+                        </div>
+                        <div>
+                            <button
+                                class="btn btn-outline-danger me-1 mb-1 btn-sm append-item @if ($resume->skills->isNotEmpty()) visually-hidden @endif"
+                                data-view="skills-view" id="add-skills">Ключевые
+                                навыки</button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6"></div>
@@ -835,17 +1147,14 @@
                 </div>
                 <div class="modal-footer">
                     <div class="d-flex">
-                        <button class="btn btn-outline-danger ms-auto">Отмена</button>
+                        <button class="btn btn-outline-danger ms-auto" data-bs-toggle="modal"
+                            data-bs-dismiss="true">Отмена</button>
                         <button class="btn btn-danger ms-3" id="add-experience-item">Сохранить</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Launch demo modal
-    </button>
 
     <div class="modal fade " id="published-modal">
         <div class="modal-dialog modal-dialog-centered">

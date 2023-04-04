@@ -33,6 +33,8 @@ Route::group(['prefix' => 'personal', 'middleware' => 'auth'], function () {
     });
 });
 
+Route::get('/resume/{resume}', [SingleViews::class, 'resume'])->name('resume');
+
 
 
 Route::group(['prefix' => 'api'], function () {
@@ -59,7 +61,16 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/education/item', [ResumeCore::class, 'educationItem'])->name('api.resume.edit.education.item');
             Route::post('/education/item/edit', [ResumeCore::class, 'educationItemEdit'])->name('api.resume.edit.education.item.edit');
             Route::post('/education/item/remove', [ResumeCore::class, 'educationItemRemove'])->name('api.resume.edit.education.item.remove');
+            Route::post('/employments', [ResumeCore::class, 'employments'])->name('api.resume.edit.employments');
+            Route::post('/employments/clear', [ResumeCore::class, 'employmentsClear'])->name('api.resume.edit.employments.clear');
+            Route::post('/schedules', [ResumeCore::class, 'schedules'])->name('api.resume.edit.schedules');
+            Route::post('/schedules/clear', [ResumeCore::class, 'schedulesClear'])->name('api.resume.edit.schedules.clear');
+            Route::post('/driving-categories', [ResumeCore::class, 'drivingCategories'])->name('api.resume.edit.driving-categories');
+            Route::post('/driving-categories/clear', [ResumeCore::class, 'drivingCategoriesClear'])->name('api.resume.edit.driving-categories.clear');
+            Route::post('/skills', [ResumeCore::class, 'skills'])->name('api.resume.edit.skills');
+            Route::post('/skills/clear', [ResumeCore::class, 'skillsClear'])->name('api.resume.edit.skills.clear');
         });
         Route::post('/publish', [ResumeCore::class, 'publish'])->name('api.resume.publish');
+        Route::post('/remove', [ResumeCore::class, 'remove'])->name('api.resume.remove');
     });
 });

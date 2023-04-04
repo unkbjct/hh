@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\PostControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Driving_license_category;
 use App\Models\Experience_item;
 use App\Models\Resume;
 use App\Models\Resume_contact;
 use App\Models\Resume_contant;
 use App\Models\Resume_education;
+use App\Models\Resume_employment;
 use App\Models\Resume_experience;
 use App\Models\Resume_job;
 use App\Models\Resume_personal;
+use App\Models\Resume_schedule;
+use App\Models\Resume_skill;
+use App\Models\Resume_drive_category;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +59,7 @@ class ResumeController extends Controller
 
         if ($request->has('about') && $resume->about != $request->about) $resume->about = $request->about;
         if ($request->has('education_level') && $resume->education_level != $request->education_level) $resume->education_level = $request->education_level;
+        ($request->has('has_car') && $resume->has_car != $request->has_car) ? $resume->has_car = 1 : $resume->has_car = 0;
         $resume->save();
 
         return response([
@@ -231,6 +237,156 @@ class ResumeController extends Controller
         ], 200);
     }
 
+
+    public function employments(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_employment::where("resume", $resume->id)->delete();
+
+        if ($request->employments) {
+            foreach ($request->employments as $employ) {
+                $employment = new Resume_employment();
+                $employment->resume = $resume->id;
+                $employment->employment = $employ;
+                $employment->save();
+            }
+        }
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function employmentsClear(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_employment::where("resume", $resume->id)->delete();
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+    public function drivingCategories(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_drive_category::where("resume", $resume->id)->delete();
+
+        if ($request->categories) {
+            foreach ($request->categories as $categ) {
+                $drive = new Resume_drive_category();
+                $drive->resume = $resume->id;
+                $drive->category = $categ;
+                $drive->save();
+            }
+        }
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function drivingCategoriesClear(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_drive_category::where("resume", $resume->id)->delete();
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+    public function schedules(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_schedule::where("resume", $resume->id)->delete();
+
+        if ($request->schedules) {
+            foreach ($request->schedules as $schedule) {
+                $newSchedule = new Resume_schedule();
+                $newSchedule->resume = $resume->id;
+                $newSchedule->schedule = $schedule;
+                $newSchedule->save();
+            }
+        }
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+    public function schedulesClear(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_schedule::where("resume", $resume->id)->delete();
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+    public function skills(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_skill::where("resume", $resume->id)->delete();
+
+        if ($request->skills) {
+            foreach ($request->skills as $skill) {
+                $newSkill = new Resume_skill();
+                $newSkill->resume = $resume->id;
+                $newSkill->skill = $skill;
+                $newSkill->save();
+            }
+        }
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+    public function skillsClear(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+
+        Resume_skill::where("resume", $resume->id)->delete();
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
+
+
+
     public function publish(Request $request)
     {
         $resume = Resume::find($request->resumeId);
@@ -240,6 +396,28 @@ class ResumeController extends Controller
         $resume->status = 'EXPECTING';
         $resume->save();
 
+        return response([
+            'status' => 'success',
+            'data' => [
+                'url' => route('personal.resume.list'),
+            ]
+        ], 200);
+    }
+
+    public function remove(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+        Resume_job::where("resume", $resume->id)->delete();
+        Resume_contact::where("resume", $resume->id)->delete();
+        Resume_education::where("resume", $resume->id)->delete();
+        Resume_employment::where("resume", $resume->id)->delete();
+        Resume_experience::where("resume", $resume->id)->delete();
+        Resume_personal::where("resume", $resume->id)->delete();
+        Resume_schedule::where("resume", $resume->id)->delete();
+        Resume_skill::where("resume", $resume->id)->delete();
+        $resume->delete();
         return response([
             'status' => 'success',
             'data' => [
