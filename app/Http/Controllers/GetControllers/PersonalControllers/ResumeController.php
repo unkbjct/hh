@@ -61,4 +61,76 @@ class ResumeController extends Controller
 
         ]);
     }
+
+    public function personal(Request $request, Resume $resume)
+    {
+        $resume->personal = Resume_personal::where("resume", $resume->id)->first();
+        return view('personal.resume.edit.personal', [
+            'resume' => $resume,
+        ]);
+    }
+
+    public function contacts(Resume $resume)
+    {
+        $resume->contacts = Resume_contact::where("resume", $resume->id)->first();
+        return view('personal.resume.edit.contacts', [
+            'resume' => $resume,
+        ]);
+    }
+
+    public function job(Resume $resume)
+    {
+        $resume->job = Resume_job::where("resume", $resume->id)->first();
+        $resume->employments = Resume_employment::where("resume", $resume->id)->get();
+        $resume->schedules = Resume_schedule::where("resume", $resume->id)->get();
+
+
+        $employments = Employment::all();
+        $schedules = Schedule::all();
+        return view('personal.resume.edit.job', [
+            'resume' => $resume,
+            'employments' => $employments,
+            'schedules' => $schedules,
+        ]);
+    }
+
+    public function experience(Resume $resume)
+    {
+        $resume->hasExperience = Resume_experience::where("resume", $resume->id)->first();
+        $resume->experiences = Experience_item::where("resume", $resume->id)->get();
+        return view('personal.resume.edit.experience', [
+            'resume' => $resume,
+        ]);
+    }
+
+    public function education(Resume $resume)
+    {
+        $resume->educations = Resume_education::where("resume", $resume->id)->get();
+
+        return view('personal.resume.edit.education', [
+            'resume' => $resume,
+        ]);
+    }
+
+    public function drivingExperience(Resume $resume)
+    {
+        $resume->drivingCategories = Resume_drive_category::where("resume", $resume->id)->get();
+
+        $drivingCategories = Driving_license_category::all();
+
+        return view('personal.resume.edit.driving-experience', [
+            'resume' => $resume,
+            'drivingCategories' => $drivingCategories,
+        ]);
+    }
+
+
+    public function skills(Resume $resume)
+    {
+        $resume->skills = Resume_skill::where("resume", $resume->id)->get();
+
+        return view('personal.resume.edit.skills', [
+            'resume' => $resume,
+        ]);
+    }
 }

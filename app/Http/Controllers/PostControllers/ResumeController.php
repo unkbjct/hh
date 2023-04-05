@@ -78,7 +78,7 @@ class ResumeController extends Controller
 
         if ($request->name && $personal->name != $request->name) $personal->name = $request->name;
         if ($request->surname && $personal->surname != $request->surname) $personal->surname = $request->surname;
-        if ($request->patronymic && $personal->patronymic != $request->patronymic) $personal->patronymic = $request->patronymic;
+        if ($request->has('patronymic') && $personal->patronymic != $request->patronymic) $personal->patronymic = $request->patronymic;
         if ($request->birthdayDay && $personal->birthday_day != $request->birthdayDay) $personal->birthday_day = $request->birthdayDay;
         if ($request->birthdayMonth && $personal->birthday_month != $request->birthdayMonth) $personal->birthday_month = $request->birthdayMonth;
         if ($request->birthdayYear && $personal->birthday_year != $request->birthdayYear) $personal->birthday_year = $request->birthdayYear;
@@ -99,10 +99,10 @@ class ResumeController extends Controller
         if (User::where("api_token", $request->token)->first() && $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
 
         $contacts = Resume_contact::where("resume", $resume->id)->first();
-        if ($request->phone && $contacts->phone != $request->phone) $contacts->phone = $request->phone;
-        if ($request->email && $contacts->email != $request->email) $contacts->email = $request->email;
-        if ($request->telegram && $contacts->telegram != $request->telegram) $contacts->telegram = $request->telegram;
-        if ($request->recomended && $contacts->recomended != $request->recomended) $contacts->recomended = $request->recomended;
+        if ($request->has("phone") && $contacts->phone != $request->phone) $contacts->phone = $request->phone;
+        if ($request->has("email") && $contacts->email != $request->email) $contacts->email = $request->email;
+        if ($request->has("telegram") && $contacts->telegram != $request->telegram) $contacts->telegram = $request->telegram;
+        if ($request->has("recomended") && $contacts->recomended != $request->recomended) $contacts->recomended = $request->recomended;
         $contacts->save();
 
         return response([

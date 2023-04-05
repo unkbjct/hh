@@ -11,8 +11,9 @@
                 <div class="col-lg-9">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h2 class="mb-4">{{ $resume->personal->surname }} {{ $resume->personal->name }}</h2>
-                            <div class="mb-5">
+                            <h2 class="mb-4">{{ $resume->personal->surname }} {{ $resume->personal->name }}
+                                {{ $resume->personal->patronymic }}</h2>
+                            <div class="mb-4">
                                 <span>
                                     @if ($resume->personal->gender == 'MALE')
                                         Мужчина
@@ -30,10 +31,12 @@
                                     {{ $resume->personal->birthday_day }}.{{ $resume->personal->birthday_month }}.{{ $resume->personal->birthday_year }}
                                 </span>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
-                                    <div><small><a href="">Редактировать</a></small></div>
+                                    <div><small><a
+                                                href="{{ route('personal.resume.edit.personal', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    </div>
                                 @endif
                             </div>
-                            <div class="mb-5">
+                            <div class="mb-4">
                                 <div class="mb-1"><small class="text-muted">Контакты</small></div>
                                 <div>
                                     @if ($resume->contacts->phone)
@@ -56,7 +59,9 @@
                                     @endif
                                 </div>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
-                                    <div><small><a href="">Редактировать</a></small></div>
+                                    <div><small><a
+                                                href="{{ route('personal.resume.edit.contacts', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    </div>
                                 @endif
                             </div>
                             <div class="mb-5">
@@ -90,7 +95,9 @@
                                     @endswitch,
                                 </span>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
-                                    <div><small><a href="">Редактировать</a></small></div>
+                                    <div><small><a
+                                                href="{{ route('personal.resume.edit.personal', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -122,27 +129,55 @@
                                 <h3>{{ $resume->job->salary }} руб. на руки</h3>
                             </div>
                             <div class="mb-3">
-                                <div>Занятость: @if (!$resume->employments)
+                                <div class="mb-3"><span class="fw-semibold">Занятость:</span>
+                                    @forelse ($resume->employments as $employ)
+                                        <div class="ms-4">{{ $employ->employment }}</div>
+                                    @empty
                                         не указано
-                                    @else
-                                    @endif
+                                    @endforelse
                                 </div>
-                                <div>График работы: @if (!$resume->schedule)
+                                <div><span class="fw-semibold">График работы:</span>
+                                    @forelse ($resume->schedules as $schedule)
+                                        <div class="ms-4">{{ $schedule->schedule }}</div>
+                                    @empty
                                         не указано
-                                    @else
-                                    @endif
+                                    @endforelse
                                 </div>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
-                                    <div><small><a href="">Редактировать</a></small></div>
+                                    <div><small><a
+                                                href="{{ route('personal.resume.edit.job', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    </div>
                                 @endif
                             </div>
                         </div>
+                        @if ($resume->drivingCategories->isNotEmpty())
+                            <div class="mb-5">
+                                <div class="mb-3">
+                                    <span class="h4 text-secondary">Категория прав</span>
+                                    @if (Auth::check() && $resume->user === Auth::user()->id)
+                                        <small class="ms-3"><a
+                                                href="{{ route('personal.resume.edit.driving-experience', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    @endif
+                                </div>
+                                <div class="d-flex flex-wrap mb-2">
+                                    @foreach ($resume->drivingCategories as $drivingCategory)
+                                        <h4><span
+                                                class="badge bg-primary me-1 mb-1">{{ $drivingCategory->category }}</span>
+                                        </h4>
+                                    @endforeach
+                                </div>
+                                @if ($resume->has_car)
+                                    <div class="fw-semibold">Если личный автобомиль</div>
+                                @endif
+                            </div>
+                        @endif
                         @if ($resume->hasExperience && $resume->hasExperience->has)
                             <div class="mb-5">
                                 <div class="mb-3">
                                     <span class="h4 text-secondary">Опыт работы</span>
                                     @if (Auth::check() && $resume->user === Auth::user()->id)
-                                        <small class="ms-3"><a href="">Редактировать</a></small>
+                                        <small class="ms-3"><a
+                                                href="{{ route('personal.resume.edit.experience', ['resume' => $resume->id]) }}">Редактировать</a></small>
                                     @endif
                                 </div>
                                 <div>
@@ -173,10 +208,29 @@
                                 <div class="mb-3">
                                     <span class="h4 text-secondary">Обо мне</span>
                                     @if (Auth::check() && $resume->user === Auth::user()->id)
-                                        <small class="ms-3"><a href="">Редактировать</a></small>
+                                        <small class="ms-3"><a
+                                                href="{{ route('personal.resume.edit.experience', ['resume' => $resume->id]) }}">Редактировать</a></small>
                                     @endif
                                 </div>
                                 <div>{{ $resume->about }}</div>
+                            </div>
+                        @endif
+                        @if ($resume->skills->isNotEmpty())
+                            <div class="mb-5">
+                                <div class="mb-3">
+                                    <span class="h4 text-secondary">Ключевае навыки</span>
+                                    @if (Auth::check() && $resume->user === Auth::user()->id)
+                                        <small class="ms-3"><a
+                                                href="{{ route('personal.resume.edit.skills', ['resume' => $resume->id]) }}">Редактировать</a></small>
+                                    @endif
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    @foreach ($resume->skills as $skill)
+                                        <div class="skills-item shadow-sm bg-white mb-1 me-1 py-2 px-4 rounded d-flex">
+                                            <div class="fw-semibold">{{ $skill->skill }}</div>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
                         <div class="mb-5">
@@ -217,7 +271,8 @@
                                     @endswitch
                                 </span>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
-                                    <small class="ms-3"><a href="">Редактировать</a></small>
+                                    <small class="ms-3"><a
+                                            href="{{ route('personal.resume.edit.education', ['resume' => $resume->id]) }}">Редактировать</a></small>
                                 @endif
                             </div>
                             <div>
@@ -239,7 +294,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="h-100 border-start border-danger border-opacity-25 bg-white">
+                    <div class="h-100 border-start border-danger border-opacity-25 bg-white shadow-sm">
                         @if (Auth::check() && $resume->user === Auth::user()->id)
                             <div class="p-3 pt-5">
                                 <div class="fs-5 fw-semibold mb-3">Видимость резюме</div>
@@ -261,15 +316,31 @@
                                     </ul>
                                 </div>
                                 <hr class="mb-4">
-                                <div class="fs-6 fw-semibold mb-2">Вы можете еще добавить</div>
-                                @if (!$resume->skills)
-                                    <a href="" class="link">
-                                        <div class="mb-1">навыки</div>
+                                {{-- <div class="fs-6 fw-semibold mb-2">Вы можете еще добавить</div> --}}
+                                @if ($resume->skills->isEmpty())
+                                    <a href="{{ route('personal.resume.edit.skills', ['resume' => $resume->id]) }}" class="link">
+                                        <div class="mb-1">Добавить навыки</div>
                                     </a>
                                 @endif
-                                @if (!$resume->skills)
-                                    <a href="" class="link">
-                                        <div class="mb-1">Наличине прав</div>
+                                @if ($resume->drivingCategories->isEmpty())
+                                    <a href="{{ route('personal.resume.edit.driving-experience', ['resume' => $resume->id]) }}" class="link">
+                                        <div class="mb-1">Добавить категории прав/наличие авто</div>
+                                    </a>
+                                @endif
+                                @if (!$resume->about)
+                                    <a href="{{ route('personal.resume.edit.experience', ['resume' => $resume->id]) }}" class="link">
+                                        <div class="mb-1">Добавить обо мне</div>
+                                    </a>
+                                @endif
+                                @if ($resume->experiences->isEmpty())
+                                    <a href="{{ route('personal.resume.edit.experience', ['resume' => $resume->id]) }}"
+                                        class="link">
+                                        <div class="mb-1">Добавить опыт работы</div>
+                                    </a>
+                                @endif
+                                @if ($resume->educations->isEmpty())
+                                    <a href="{{ route('personal.resume.edit.education', ['resume' => $resume->id]) }}" class="link">
+                                        <div class="mb-1">Добавить место учебы</div>
                                     </a>
                                 @endif
                             </div>

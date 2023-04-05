@@ -34,7 +34,7 @@
 
 
         $(".input-personal").on("change", function() {
-            if (!this.value) return;
+            if (this.name != 'patronymic' && !this.value) return;
             console.log(this.name, this.value)
             $.ajax({
                 url: "{{ route('api.resume.edit.personal') }}",
@@ -55,7 +55,6 @@
         })
 
         $(".input-contacts").on("change", function() {
-            if (!this.value) return;
             console.log(this.name, this.value)
             $.ajax({
                 url: "{{ route('api.resume.edit.contacts') }}",
@@ -181,6 +180,18 @@
                     console.log(e)
                     alert('Что-то пошло не так \nПопробуйте позже')
                 }
+            })
+        })
+
+        $("#btn-add-experience-item").click(function() {
+            $("#experience-item").find("input").each((index, element) => {
+                element.value = null;
+            })
+            $("#experience-item").find("textarea").each((index, element) => {
+                element.value = null;
+            })
+            $("#experience-item").find("select").each((index, element) => {
+                element.value = null;
             })
         })
 
@@ -741,7 +752,7 @@
                 <div class="col-lg-4 hasnt-experience @if ($resume->hasExperience && !$resume->hasExperience->has) visually-hidden @endif">
                     <div>
                         <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#experience-item">Добавить место работы</button>
+                            data-bs-target="#experience-item" id="btn-add-experience-item">Добавить место работы</button>
                     </div>
                 </div>
                 <div class="col-lg-6 hasnt-experience @if ($resume->hasExperience && !$resume->hasExperience->has) visually-hidden @endif"></div>
@@ -1055,33 +1066,21 @@
                                 <select name="birthdayMonth" placeholde="Месяц" name="start_day" id="start_day"
                                     class="form-control input-experience-item validation">
                                     <option value="" disabled selected>Месяц</option>
-                                    <option @if ($resume->personal->birthday_month == '1') selected @endif value="1">Январь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '2') selected @endif value="2">Февраль
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '3') selected @endif value="3">Март
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '4') selected @endif value="4">Апрель
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '5') selected @endif value="5">Май</option>
-                                    <option @if ($resume->personal->birthday_month == '6') selected @endif value="6">Июнь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '7') selected @endif value="7">Июль
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '8') selected @endif value="8">Август
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '9') selected @endif value="9">Сентябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '10') selected @endif value="10">Октябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '11') selected @endif value="11">Ноябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '12') selected @endif value="12">Декабрь
-                                    </option>
+                                    <option value="1">Январь</option>
+                                    <option value="2">Февраль</option>
+                                    <option value="3">Март</option>
+                                    <option value="4">Апрель</option>
+                                    <option value="5">Май</option>
+                                    <option value="6">Июнь</option>
+                                    <option value="7">Июль</option>
+                                    <option value="8">Август</option>
+                                    <option value="9">Сентябрь</option>
+                                    <option value="10">Октябрь</option>
+                                    <option value="11">Ноябрь</option>
+                                    <option value="12">Декабрь</option>
                                 </select>
-                                <input type="number" name="start_year" id="start_year"
-                                    @if ($resume->personal->birthday_year) value="{{ $resume->personal->birthday_year }}" @endif
-                                    placeholder="Год" class="form-control input-experience-item validation">
+                                <input type="number" name="start_year" id="start_year" placeholder="Год"
+                                    class="form-control input-experience-item validation">
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -1090,33 +1089,21 @@
                                 <select name="birthdayMonth" id="end_day" placeholde="Месяц" name="end_day"
                                     class="form-control input-experience-item">
                                     <option value="" disabled selected>Месяц</option>
-                                    <option @if ($resume->personal->birthday_month == '1') selected @endif value="1">Январь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '2') selected @endif value="2">Февраль
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '3') selected @endif value="3">Март
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '4') selected @endif value="4">Апрель
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '5') selected @endif value="5">Май</option>
-                                    <option @if ($resume->personal->birthday_month == '6') selected @endif value="6">Июнь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '7') selected @endif value="7">Июль
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '8') selected @endif value="8">Август
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '9') selected @endif value="9">Сентябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '10') selected @endif value="10">Октябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '11') selected @endif value="11">Ноябрь
-                                    </option>
-                                    <option @if ($resume->personal->birthday_month == '12') selected @endif value="12">Декабрь
-                                    </option>
+                                    <option value="1">Январь</option>
+                                    <option value="2">Февраль</option>
+                                    <option value="3">Март</option>
+                                    <option value="4">Апрель</option>
+                                    <option value="5">Май</option>
+                                    <option value="6">Июнь</option>
+                                    <option value="7">Июль</option>
+                                    <option value="8">Август</option>
+                                    <option value="9">Сентябрь</option>
+                                    <option value="10">Октябрь</option>
+                                    <option value="11">Ноябрь</option>
+                                    <option value="12">Декабрь</option>
                                 </select>
-                                <input type="number" name="end_year" id="end_year"
-                                    @if ($resume->personal->birthday_year) value="{{ $resume->personal->birthday_year }}" @endif
-                                    placeholder="Год" class="form-control input-experience-item">
+                                <input type="number" name="end_year" id="end_year" placeholder="Год"
+                                    class="form-control input-experience-item">
                             </div>
                         </div>
                         <div class="col-lg-12">

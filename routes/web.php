@@ -30,6 +30,15 @@ Route::group(['prefix' => 'personal', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'resume'], function () {
         Route::get('/', [ResumeViews::class, 'list'])->name('personal.resume.list');
         Route::get('/applicant/resume/{resume}', [ResumeViews::class, 'applicant'])->name('personal.resume.applicant');
+        Route::group(['prefix' => '{resume}/edit'], function () {
+            Route::get('/personal', [ResumeViews::class, 'personal'])->name('personal.resume.edit.personal');
+            Route::get('/contacts', [ResumeViews::class, 'contacts'])->name('personal.resume.edit.contacts');
+            Route::get('/job', [ResumeViews::class, 'job'])->name('personal.resume.edit.job');
+            Route::get('/experience', [ResumeViews::class, 'experience'])->name('personal.resume.edit.experience');
+            Route::get('/education', [ResumeViews::class, 'education'])->name('personal.resume.edit.education');
+            Route::get('/driving-experience', [ResumeViews::class, 'drivingExperience'])->name('personal.resume.edit.driving-experience');
+            Route::get('/skills', [ResumeViews::class, 'skills'])->name('personal.resume.edit.skills');
+        });
     });
 });
 
