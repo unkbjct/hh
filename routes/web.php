@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\GetControllers\ApiController as ApiGet;
+use App\Http\Controllers\GetControllers\CompanyController as CompanyViews;
 use App\Http\Controllers\GetControllers\PersonalControllers\ResumeController as ResumeViews;
 use App\Http\Controllers\GetControllers\SingleController as SingleViews;
+use App\Http\Controllers\GetControllers\VacancyController as VacancyViews;
 use App\Http\Controllers\PostController\PersonalController as PersonalCore;
+use App\Http\Controllers\PostControllers\CompanyController as CompanyCore;
 use App\Http\Controllers\PostControllers\ResumeController as ResumeCore;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +43,19 @@ Route::group(['prefix' => 'personal', 'middleware' => 'auth'], function () {
             Route::get('/skills', [ResumeViews::class, 'skills'])->name('personal.resume.edit.skills');
         });
     });
+
+    Route::group(['prefix' => 'company'], function () {
+        Route::get('/', [CompanyViews::class, 'list'])->name('personal.company.list');
+        Route::get('/create', [CompanyViews::class, 'create'])->name('personal.company.create');
+        Route::group(['prefix' => '{company}/vacancy'], function () {
+            Route::get('/', [VacancyViews::class, 'list'])->name('personal.company.vanancy.list');
+            Route::get('/create', [VacancyViews::class, 'create'])->name('personal.company.vacancy.create');
+        });
+    });
+
+    // Route::group(['prefix' => 'vacancy'], function () {
+    //     Route::get('/', [VacancyViews::class, 'list'])->name('personal.vacancy.list');
+    // });
 });
 
 Route::get('/resume/{resume}', [SingleViews::class, 'resume'])->name('resume');
@@ -58,7 +74,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/password/edit', [PersonalCore::class, 'editPassword'])->name('api.password.edit');
 
     Route::group(['prefix' => 'resume'], function () {
-        Route::post('/resumne/create', [ResumeCore::class, 'create'])->name('api.resume.create');
+        Route::post('/resume/create', [ResumeCore::class, 'create'])->name('api.resume.create');
         Route::group(['prefix' => 'edit'], function () {
             Route::post('/', [ResumeCore::class, 'edit'])->name('api.resume.edit');
             Route::post('/personal', [ResumeCore::class, 'personal'])->name('api.resume.edit.personal');
@@ -78,8 +94,14 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/driving-categories/clear', [ResumeCore::class, 'drivingCategoriesClear'])->name('api.resume.edit.driving-categories.clear');
             Route::post('/skills', [ResumeCore::class, 'skills'])->name('api.resume.edit.skills');
             Route::post('/skills/clear', [ResumeCore::class, 'skillsClear'])->name('api.resume.edit.skills.clear');
+            Route::post('/image', [ResumeCore::class, 'image'])->name('api.resume.edit.image');
         });
+
         Route::post('/publish', [ResumeCore::class, 'publish'])->name('api.resume.publish');
         Route::post('/remove', [ResumeCore::class, 'remove'])->name('api.resume.remove');
+    });
+
+    Route::group(['prefix' => 'company'], function () {
+        Route::post('/create', [CompanyCore::class, 'create'])->name('api.company.create');
     });
 });

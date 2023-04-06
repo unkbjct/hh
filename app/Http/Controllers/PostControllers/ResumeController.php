@@ -385,6 +385,21 @@ class ResumeController extends Controller
 
 
 
+    public function image(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+        if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
+        
+        $path = $request->file('image')->store('images/resumes', 'public');
+        $resume->image = "/public/storage/{$path}";
+        $resume->save();
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+
 
 
     public function publish(Request $request)
@@ -417,6 +432,7 @@ class ResumeController extends Controller
         Resume_personal::where("resume", $resume->id)->delete();
         Resume_schedule::where("resume", $resume->id)->delete();
         Resume_skill::where("resume", $resume->id)->delete();
+        Resume_drive_category::where("resume", $resume->id)->delete();
         $resume->delete();
         return response([
             'status' => 'success',

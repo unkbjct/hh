@@ -76,9 +76,9 @@
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('personal.resume.list') }}">Мое
+                                        <li><a class="dropdown-item" href="{{ route('personal.resume.list') }}">Мои
                                                 резюме</a></li>
-                                        <li><a class="dropdown-item" href="#">Мои вакансии</a></li>
+                                        <li><a class="dropdown-item" href="{{route('personal.company.list')}}">Мои вакансии</a></li>
                                         <li>
                                             <hr class="dropdown-divider">
                                         </li>
