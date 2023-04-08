@@ -3,7 +3,8 @@ $(document).ready(() => {
         $(this).removeClass("is-invalid")
     })
     $(".validation").blur(function () {
-        if (this.value == '' && !this.classList.contains("category")) {
+        if (this.value == '' && !this.dataset.addList) {
+            console.log(this.dataset.addList)
             $(this).addClass("is-invalid")
         }
     })
@@ -37,7 +38,7 @@ $(document).ready(() => {
     })
 
 
-    
+
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 })

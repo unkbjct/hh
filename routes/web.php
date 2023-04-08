@@ -8,6 +8,7 @@ use App\Http\Controllers\GetControllers\VacancyController as VacancyViews;
 use App\Http\Controllers\PostController\PersonalController as PersonalCore;
 use App\Http\Controllers\PostControllers\CompanyController as CompanyCore;
 use App\Http\Controllers\PostControllers\ResumeController as ResumeCore;
+use App\Http\Controllers\PostControllers\VacancyController as VacancyCore;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -48,7 +49,7 @@ Route::group(['prefix' => 'personal', 'middleware' => 'auth'], function () {
         Route::get('/', [CompanyViews::class, 'list'])->name('personal.company.list');
         Route::get('/create', [CompanyViews::class, 'create'])->name('personal.company.create');
         Route::group(['prefix' => '{company}/vacancy'], function () {
-            Route::get('/', [VacancyViews::class, 'list'])->name('personal.company.vanancy.list');
+            Route::get('/', [VacancyViews::class, 'list'])->name('personal.company.vacancy.list');
             Route::get('/create', [VacancyViews::class, 'create'])->name('personal.company.vacancy.create');
         });
     });
@@ -103,5 +104,8 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::group(['prefix' => 'company'], function () {
         Route::post('/create', [CompanyCore::class, 'create'])->name('api.company.create');
+        Route::group(['prefix' => '{company}/vacancy/'], function () {
+            Route::post('/create', [VacancyCore::class, 'create'])->name('api.company.vacancy.create');
+        });
     });
 });

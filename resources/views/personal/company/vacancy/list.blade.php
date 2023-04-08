@@ -29,13 +29,37 @@
                                 <a href="{{ route('personal.company.vacancy.create', ['company' => $company->id]) }}"
                                     class="btn btn-primary btn-sm">Добавить вакансию</a>
                             </div>
-                            <div class="text-center text-secondary fs-5 py-5">На данный момент у компании нет открытых
-                                вакансий</div>
+                            @forelse ($vacancies as $vacancy)
+                                @switch($vacancy->status)
+                                    @case('CREATED')
+                                        <div class="card shadow-sm border border-opacity-5 border-warning mb-3">
+                                            <div class="card-header"><code>Вакансия проходит проверку, дождитесь ее окончания</code>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="mb-2">
+                                                    <a href="{{ 'asd' }}"
+                                                        class="text-decoration-none fw-semibold fs-4 color-primary">{{ $vacancy->position }}</a>
+                                                </div>
+                                                <div class="mb-3 fs-4 fw-semibold">
+                                                    {{ number_format($vacancy->salary, 0, '-', ' ') }} руб.</div>
+                                            </div>
+                                        </div>
+                                    @break
+
+                                    @case('PUBLISHED')
+                                    @break
+
+                                    @default
+                                @endswitch
+                                @empty
+                                    <div class="text-center text-secondary fs-5 py-5">На данный момент у компании нет открытых
+                                        вакансий</div>
+                                @endforelse
+                            </div>
                         </div>
                     </div>
+                    <div class="col-lg-2"></div>
                 </div>
-                <div class="col-lg-2"></div>
-            </div>
-        </section>
-    </div>
-@endsection
+            </section>
+        </div>
+    @endsection

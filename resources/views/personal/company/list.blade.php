@@ -11,10 +11,11 @@
             <div class="row gy-4">
                 @forelse ($companies as $company)
                     <div class="col-lg-6">
-                        <div class="card card-body @if ($company->status == 'CREATED') border-warning @else border-primary @endif shadow-sm h-100">
+                        <div
+                            class="card card-body @if ($company->status == 'CREATED') border-warning @else border-primary @endif shadow-sm h-100">
                             <div>
                                 <a class="btn btn-link text-decoration-none @if ($company->status == 'CREATED') disabled @endif"
-                                    href="{{route('personal.company.vanancy.list', ['company' => $company->id])}}">
+                                    href="{{ route('personal.company.vacancy.list', ['company' => $company->id]) }}">
                                     <h4 class="text-primary">{{ $company->legal_title }}</h4>
                                 </a>
                                 @if ($company->status == 'CREATED')
