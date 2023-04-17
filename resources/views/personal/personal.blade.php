@@ -89,7 +89,7 @@
     <div class="container">
         <div class="mb-4">
             <h1 class="h3">Личный кабинет</h1>
-            <h5>{{ Auth::user()->surname }} {{ Auth::user()->name }}</h5>
+            <h5> @if(Auth::user()->status == 'ADMIN') Администратор - @endif {{ Auth::user()->surname }} {{ Auth::user()->name }}</h5>
         </div>
         <div class="card card-body border-0 shadow-sm mb-4">
             <form id="form-personal">

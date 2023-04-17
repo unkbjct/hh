@@ -96,34 +96,14 @@
                                 @endif
                             </div>
                             <div class="mb-5">
-                                <span>{{ $resume->city->city }}, </span>
+                                <span>{{ $resume->city }}, </span>
                                 <span>
                                     @switch($resume->personal->moving)
-                                        @case('cant')
-                                            к переезду не готов
-                                        @break
-
-                                        @case('can')
-                                            может переехать
-                                        @break
-
-                                        @default
-                                            желает переехать
-                                    @endswitch,
+                                        @case('cant')к переезду не готов@break @case('can')может переехать@break @default желает переехать@endswitch,
                                 </span>
                                 <span>
                                     @switch($resume->personal->trips)
-                                        @case('never')
-                                            не готов к командировкам
-                                        @break
-
-                                        @case('ready')
-                                            готов к командировкам
-                                        @break
-
-                                        @default
-                                            иногда может ездить в командировки
-                                    @endswitch,
+                                        @case('never')не готов к командировкам@break @case('ready')готов к командировкам@break @default иногда может ездить в командировки@endswitch.
                                 </span>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
                                     <div><small><a
@@ -181,7 +161,7 @@
                         <div class="mb-5">
                             <div class="d-flex align-items-center mb-3">
                                 <h2 class="me-auto">{{ $resume->job->title }}</h2>
-                                <h3>{{ $resume->job->salary }} руб. на руки</h3>
+                                <h3>{{ number_format($resume->job->salary, 0, 0, " ") }} руб. на руки</h3>
                             </div>
                             <div class="mb-3">
                                 <div class="mb-3"><span class="fw-semibold">Занятость:</span>

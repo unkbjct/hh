@@ -13,6 +13,7 @@
             formData.append("image", $("#image")[0].files[0])
             formData.append("token", token)
             formData.append("legal_title", $("#legal_title").val())
+            formData.append("city", $("#city").val())
             formData.append("address", $("#address").val())
             formData.append("description", $("#description").val())
             $.ajax({
@@ -26,6 +27,7 @@
                     window.location = "{{ route('personal.company.list') }}"
                 },
                 error: function(e) {
+                    console.log(e)
                     for (let key in e.responseJSON.errors) {
                         $("#" + key).addClass("is-invalid");
                         $("#" + key).parent().find('.invalid-feedback').remove();
@@ -57,6 +59,13 @@
                         <div class="mb-3">
                             <label for="legal_title" class="form-label">Описание компании *</label>
                             <textarea id="description" class="form-control validation" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3 position-relative">
+                            <label for="city-form-input" class="form-label">Город *</label>
+                            <input type="hidden" name="city" id="city">
+                            <input type="text" class="form-control validation" id="city-form-input">
+                            <div class="list-group position-absolute w-100">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="legal_title" class="form-label">Адрес</label>

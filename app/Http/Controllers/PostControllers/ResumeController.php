@@ -41,6 +41,11 @@ class ResumeController extends Controller
         $contants->phone = Auth::user()->phone;
         $contants->save();
 
+        $experience = new Resume_experience();
+        $experience->resume = $resume->id;
+        $experience->has = 0;
+        $experience->save();
+
         return response([
             'status' => 'success',
             'data' => [
@@ -84,6 +89,7 @@ class ResumeController extends Controller
         if ($request->birthdayYear && $personal->birthday_year != $request->birthdayYear) $personal->birthday_year = $request->birthdayYear;
         if ($request->gender && $personal->gender != $request->gender) $personal->gender = $request->gender;
         if ($request->moving && $personal->moving != $request->moving) $personal->moving = $request->moving;
+        if ($request->city && $personal->city != $request->city) $personal->city = $request->city;
         if ($request->trips && $personal->trips != $request->trips) $personal->trips = $request->trips;
 
         $personal->save();
@@ -440,5 +446,19 @@ class ResumeController extends Controller
                 'url' => route('personal.resume.list'),
             ]
         ], 200);
+    }
+
+    public function visibility(Request $request)
+    {
+        $resume = Resume::find($request->resumeId);
+        $resume->status = ($request->visibility == 'show') ? 'PUBLISHED' : 'HIDDEN';
+        $resume->save();
+        return response([
+            'status' => 'success',
+            'data' => [
+                'url' => route('personal.resume.list'),
+            ]
+        ], 200);
+
     }
 }

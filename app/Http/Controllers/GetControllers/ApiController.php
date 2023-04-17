@@ -33,7 +33,13 @@ class ApiController extends Controller
     {
         $ip = $_SERVER['REMOTE_ADDR'];
         $data = \Location::get($ip);
-        if (!$data) return redirect()->back()->withCookie(cookie()->forever('city', 'incorrect'));
+        if (!$data) {
+            $city = City::find(510);
+            return redirect()->back()->withCookie(cookie()->forever('city', json_encode([
+                'id' => $city->id,
+                'title' => ($city->city) ? $city->city : $city->region,
+            ], JSON_UNESCAPED_UNICODE)));
+        }
         $lat = (int)($data->latitude);
         $long = (int)($data->longitude);
         $city = City::where('geo_lat', "LIKE", "{$lat}%")->where('geo_lon', "LIKE", "{$long}%")->first();
@@ -43,9 +49,11 @@ class ApiController extends Controller
                 'title' => ($city->city) ? $city->city : $city->region,
             ], JSON_UNESCAPED_UNICODE)));
         } else {
-            return redirect()->back()->withCookie(cookie()->forever('city', 'incorrect'));
+            $city = City::find(510);
+            return redirect()->back()->withCookie(cookie()->forever('city', json_encode([
+                'id' => $city->id,
+                'title' => ($city->city) ? $city->city : $city->region,
+            ], JSON_UNESCAPED_UNICODE)));
         }
     }
-
-
 }

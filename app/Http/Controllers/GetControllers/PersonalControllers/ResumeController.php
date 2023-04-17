@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GetControllers\PersonalControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Employment;
 use App\Models\Experience_item;
 use App\Models\Resume;
@@ -48,7 +49,7 @@ class ResumeController extends Controller
         $resume->schedules = Resume_schedule::where("resume", $resume->id)->get();
         $resume->drivingCategories = Resume_drive_category::where("resume", $resume->id)->get();
         $resume->skills = Resume_skill::where("resume", $resume->id)->get();
-
+        $resume->personal->city = (City::find($resume->personal->city)->city) ? City::find($resume->personal->city)->city : City::find($resume->personal->city)->region;
         $employments = Employment::all();
         $schedules = Schedule::all();
         $drivingCategories = Driving_license_category::all();

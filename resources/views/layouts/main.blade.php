@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{ asset('public/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('public/css/main.css') }}">
-    <script src="{{ asset('public/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('public/js/jquery-3.6.4.js') }}"></script>
+    <script src="{{ asset('public/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('public/js/main.js') }}"></script>
     @yield('components')
     <title>@yield('title')</title>
@@ -64,27 +64,67 @@
                                         аккаунт</a>
                                 </li>
                             @else
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{ Auth::user()->name }}
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('personal') }}">{{ Auth::user()->surname }}
-                                                {{ Auth::user()->name }}</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('personal.resume.list') }}">Мои
-                                                резюме</a></li>
-                                        <li><a class="dropdown-item" href="{{route('personal.company.list')}}">Мои вакансии</a></li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
-                                    </ul>
-                                </li>
+                                @if (Auth::user()->status == 'USER')
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ Auth::user()->name }}
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('personal') }}">{{ Auth::user()->surname }}
+                                                    {{ Auth::user()->name }}</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{{ route('personal.resume.list') }}">Мои
+                                                    резюме</a></li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('personal.company.list') }}">Мои вакансии</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('personal.responses') }}">Мои отклики</a></li>
+                                            <li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('personal.favorites') }}">Избранное</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ Auth::user()->name }}
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('personal') }}">{{ Auth::user()->surname }}
+                                                    {{ Auth::user()->name }}</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{{ route('admin.resume') }}">Резюме</a>
+                                            </li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('admin.company') }}">Компании</a></li>
+                                            <li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('admin.vacancy') }}">Вакансии</a></li>
+                                            <li>
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('admin.users') }}">Пользователи</a></li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
+                                        </ul>
+                                    </li>
+                                @endif
                             @endif
                         </ul>
                     </div>
@@ -115,9 +155,40 @@
                 </div>
             </div>
 
-            @yield('modals')
+            <div class="modal fade" id="good-response">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h3>Успех</h3>
+                            <div class="fw-semibold">Вы успешно откликнулись на вакансию:</div>
+                            <code class="fs-5 fw-semibold" id="good-response-position"></code>
+                            <p>Если работодателю понравиться ваше резюме, он скоро свяжется с вами</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="modal fade" id="bad-response">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h3>Ошибка</h3>
+                            <div class="fw-semibold">Вы не можете откилкнуться на эту вакансию:</div>
+                            <code class="fs-6 fw-semibold" id="bad-response-position"></code>
+                            <p>По правилам, пользователь может откилкнуться на одну и туже вакансию только один раз в
+                                день</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            @yield('modals')
             @yield('main')
+
+
         </main>
         <footer class="border-top">
             <div class="container">
@@ -209,6 +280,7 @@
 
     @yield('styles')
     @yield('scripts')
+
 </body>
 
 </html>

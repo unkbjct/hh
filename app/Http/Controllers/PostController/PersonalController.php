@@ -99,10 +99,7 @@ class PersonalController extends Controller
 
         if ($errs) {
             return response([
-                'errors' => [
-                    'login' => '',
-                    'passwd' => 'Пользователь не найден!',
-                ]
+                'errors' => $errs
             ], 422);
         };
         $user = User::find(Auth::user()->id);

@@ -30,7 +30,7 @@
                             @endif
                         </h1>
                         <div>
-                            <button class="btn btn-primary btn-sm">Расширенный поиск</button>
+                            <a href="{{ route('vacancy.search') }}" class="btn btn-primary btn-sm">Расширенный поиск</a>
                         </div>
                     </div>
                     <div class="row gy-4">
@@ -67,10 +67,10 @@
                 <div class="tab-pane fade" id="worker-tab-pane">
                     <div class="">
                         <div class="mb-4">
-                            <input type="text" class="form-control mb-2"
-                            placeholder="Начние вводить название профессии">
+                            <input type="text" class="form-control mb-2" placeholder="Начние вводить название профессии">
                             <div class="d-flex mb-2">
-                                <a href="" class="btn btn-primary btn-sm ms-auto">Расширенный поиск</a>
+                                <a href="{{ route('resume.search') }}" class="btn btn-primary btn-sm ms-auto">Расширенный
+                                    поиск</a>
                             </div>
                         </div>
                         <div class="row gy-4">

@@ -4,474 +4,552 @@
     Создание нового резюме
 @endsection
 
-@section('scripts')
-    <script>
-        let resumeId = {{ $resume->id }}
-        let token = '{{ Auth::user()->api_token }}'
+@if (Auth::user()->status != 'ADMIN')
+    @section('scripts')
+        <script>
+            let resumeId = {{ $resume->id }}
+            let token = '{{ Auth::user()->api_token }}'
 
-        $(".input-resume").on("change", function() {
-            if (this.name == 'has_car') {
-                this.value = (this.checked) ? 1 : 0;
-            }
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
+            $(".input-resume").on("change", function() {
+                if (this.name == 'has_car') {
+                    this.value = (this.checked) ? 1 : 0;
                 }
-            })
-        })
-
-
-        $(".input-personal").on("change", function() {
-            if (this.name != 'patronymic' && !this.value) return;
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit.personal') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $(".input-contacts").on("change", function() {
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit.contacts') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-
-        $(".input-job").on("change", function() {
-            if (!this.value) return;
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit.job') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $(".input-has-experience").on("change", function() {
-            (this.value == 1) ? $(".hasnt-experience").removeClass("visually-hidden"): $(".hasnt-experience")
-                .addClass("visually-hidden");
-            if (!this.value) return;
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit.experience') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-
-        $("#add-experience-item").click(function() {
-            $.ajax({
-                url: "{{ route('api.resume.edit.experience.item') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    epxerienceItemId: this.dataset.itemId,
-                    company: $("#company").val(),
-                    position: $("#position").val(),
-                    responsibilities: $("#responsibilities").val(),
-                    start_day: $("#start_day").val(),
-                    start_year: $("#start_year").val(),
-                    end_day: $("#end_day").val(),
-                    end_year: $("#end_year").val(),
-                },
-                success: function(e) {
-                    console.log(e)
-                    location.reload();
-                },
-                error: function(e) {
-                    console.log(e)
-                    for (let key in e.responseJSON.errors) {
-                        $("#" + key).addClass("is-invalid");
-                        $("#" + key).parent().find('.invalid-feedback').remove();
-                        $("#" + key).parent().append(
-                            `<div class="invalid-feedback">${e.responseJSON.errors[key]}</div>`);
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
                     }
+                })
+            })
+
+
+            $(".input-personal").on("change", function() {
+                if (this.name != 'patronymic' && !this.value) return;
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.personal') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $(".input-contacts").on("change", function() {
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.contacts') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+
+            $(".input-job").on("change", function() {
+                if (!this.value) return;
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.job') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $(".input-has-experience").on("change", function() {
+                (this.value == 1) ? $(".hasnt-experience").removeClass("visually-hidden"): $(".hasnt-experience")
+                    .addClass("visually-hidden");
+                if (!this.value) return;
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.experience') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+
+            $("#add-experience-item").click(function() {
+                $.ajax({
+                    url: "{{ route('api.resume.edit.experience.item') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        epxerienceItemId: this.dataset.itemId,
+                        company: $("#company").val(),
+                        position: $("#position").val(),
+                        responsibilities: $("#responsibilities").val(),
+                        start_day: $("#start_day").val(),
+                        start_year: $("#start_year").val(),
+                        end_day: $("#end_day").val(),
+                        end_year: $("#end_year").val(),
+                    },
+                    success: function(e) {
+                        console.log(e)
+                        location.reload();
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        for (let key in e.responseJSON.errors) {
+                            $("#" + key).addClass("is-invalid");
+                            $("#" + key).parent().find('.invalid-feedback').remove();
+                            $("#" + key).parent().append(
+                                `<div class="invalid-feedback">${e.responseJSON.errors[key]}</div>`);
+                        }
+                    }
+                })
+            })
+
+            $(".edit-experience-item").click(function() {
+                let item = JSON.parse(this.dataset.item);
+                for (let key in item) {
+                    console.log(key)
+                    if (key == 'id') $("#add-experience-item").attr("data-item-id", item[key])
+                    $("#" + key).val(item[key])
+                    // console.log(item[key])
                 }
             })
-        })
 
-        $(".edit-experience-item").click(function() {
-            let item = JSON.parse(this.dataset.item);
-            for (let key in item) {
-                console.log(key)
-                if (key == 'id') $("#add-experience-item").attr("data-item-id", item[key])
-                $("#" + key).val(item[key])
-                // console.log(item[key])
-            }
-        })
+            $(".remove-experience-item").click(function() {
+                let id = JSON.parse(this.dataset.itemId);
+                $.ajax({
+                    url: "{{ route('api.resume.edit.experience.item.remove') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        epxerienceItemId: this.dataset.itemId,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                        location.reload();
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
 
-        $(".remove-experience-item").click(function() {
-            let id = JSON.parse(this.dataset.itemId);
-            $.ajax({
-                url: "{{ route('api.resume.edit.experience.item.remove') }}",
-                method: 'POST',
-                data: {
+            $("#btn-add-experience-item").click(function() {
+                $("#experience-item").find("input").each((index, element) => {
+                    element.value = null;
+                })
+                $("#experience-item").find("textarea").each((index, element) => {
+                    element.value = null;
+                })
+                $("#experience-item").find("select").each((index, element) => {
+                    element.value = null;
+                })
+            })
+
+
+            $("#education_level").on("change", function() {
+                (this.value == 'secondary') ? $(".education-hidden").addClass("visually-hidden"): $(".education-hidden")
+                    .removeClass("visually-hidden");
+            })
+
+            $("#add-education-item").click(function() {
+                $.ajax({
+                    url: "{{ route('api.resume.edit.education.item') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                        location.reload();
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+
+            $(".input-education-item").on("change", function() {
+                console.log(this.name, this.value)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.education.item.edit') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        educationItemId: this.dataset.educationId,
+                        [this.name]: this.value,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+
+            $(".remove-education-item").click(function() {
+                $.ajax({
+                    url: "{{ route('api.resume.edit.education.item.remove') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        educationItemId: this.dataset.educationId,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                        location.reload();
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $("#resume-publish").click(function() {
+                $.ajax({
+                    url: "{{ route('api.resume.publish') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                    },
+                    success: function(e) {
+                        const publishedModal = new bootstrap.Modal(document.getElementById(
+                            'published-modal'))
+                        document.getElementById('published-modal').addEventListener("hidden.bs.modal",
+                            function() {
+                                window.location = e.data.url
+                            })
+                        publishedModal.show();
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $(".append-item").click(function() {
+                $("." + this.dataset.view).removeClass("visually-hidden")
+                $("." + this.dataset.view).appendTo("#append-list")
+                $(this).addClass("visually-hidden")
+            })
+
+            $(".btn-hide-additional").click(function() {
+                $("#" + this.dataset.btnId).removeClass("visually-hidden")
+                $("." + this.dataset.view).addClass("visually-hidden")
+
+                let url = (this.dataset.urlClear === 'has_car') ? "{{ route('api.resume.edit') }}" : this.dataset
+                    .urlClear;
+                let data = (this.dataset.urlClear === 'has_car') ? {
                     resumeId: resumeId,
                     token: token,
-                    epxerienceItemId: this.dataset.itemId,
-                },
-                success: function(e) {
-                    console.log(e)
-                    location.reload();
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $("#btn-add-experience-item").click(function() {
-            $("#experience-item").find("input").each((index, element) => {
-                element.value = null;
-            })
-            $("#experience-item").find("textarea").each((index, element) => {
-                element.value = null;
-            })
-            $("#experience-item").find("select").each((index, element) => {
-                element.value = null;
-            })
-        })
-
-
-        $("#education_level").on("change", function() {
-            (this.value == 'secondary') ? $(".education-hidden").addClass("visually-hidden"): $(".education-hidden")
-                .removeClass("visually-hidden");
-        })
-
-        $("#add-education-item").click(function() {
-            $.ajax({
-                url: "{{ route('api.resume.edit.education.item') }}",
-                method: 'POST',
-                data: {
+                    has_car: 0,
+                } : {
                     resumeId: resumeId,
                     token: token,
-                },
-                success: function(e) {
-                    console.log(e)
-                    location.reload();
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
+                };
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                    },
+                    success: function(e) {
+                        location.reload();
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
 
-
-        $(".input-education-item").on("change", function() {
-            console.log(this.name, this.value)
-            $.ajax({
-                url: "{{ route('api.resume.edit.education.item.edit') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    educationItemId: this.dataset.educationId,
-                    [this.name]: this.value,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-
-        $(".remove-education-item").click(function() {
-            $.ajax({
-                url: "{{ route('api.resume.edit.education.item.remove') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    educationItemId: this.dataset.educationId,
-                },
-                success: function(e) {
-                    console.log(e)
-                    location.reload();
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $("#resume-publish").click(function() {
-            $.ajax({
-                url: "{{ route('api.resume.publish') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                },
-                success: function(e) {
-                    const publishedModal = new bootstrap.Modal(document.getElementById(
-                        'published-modal'))
-                    document.getElementById('published-modal').addEventListener("hidden.bs.modal",
-                        function() {
-                            window.location = e.data.url
-                        })
-                    publishedModal.show();
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $(".append-item").click(function() {
-            $("." + this.dataset.view).removeClass("visually-hidden")
-            $("." + this.dataset.view).appendTo("#append-list")
-            $(this).addClass("visually-hidden")
-        })
-
-        $(".btn-hide-additional").click(function() {
-            $("#" + this.dataset.btnId).removeClass("visually-hidden")
-            $("." + this.dataset.view).addClass("visually-hidden")
-
-            let url = (this.dataset.urlClear === 'has_car') ? "{{ route('api.resume.edit') }}" : this.dataset
-                .urlClear;
-            let data = (this.dataset.urlClear === 'has_car') ? {
-                resumeId: resumeId,
-                token: token,
-                has_car: 0,
-            } : {
-                resumeId: resumeId,
-                token: token,
-            };
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                },
-                success: function(e) {
-                    location.reload();
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
             })
 
-        })
-
-        $(".input-employments").on('change', function() {
-            let array = [];
-            $(".input-employments").each((index, element) => {
-                if (element.checked) array.push(element.value)
-            })
-            console.log(array)
-            $.ajax({
-                url: "{{ route('api.resume.edit.employments') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    employments: array,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-
-        $(".input-drive-category").on('change', function() {
-            let array = [];
-            $(".input-drive-category").each((index, element) => {
-                if (element.checked) array.push(element.value)
-            })
-            console.log(array)
-            $.ajax({
-                url: "{{ route('api.resume.edit.driving-categories') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    categories: array,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $(".input-schedules").on('change', function() {
-            let array = [];
-            $(".input-schedules").each((index, element) => {
-                if (element.checked) array.push(element.value)
-            })
-            console.log(array)
-            $.ajax({
-                url: "{{ route('api.resume.edit.schedules') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    schedules: array,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-
-        $("#add-skill").click(function() {
-            let value = $("#input-skill").val();
-            let repeat = false;
-            $(".skills-item").each((index, element) => {
-                if ($(element).children()[0].textContent == value) repeat = true;
-            })
-            if (repeat) return;
-
-            $("#skills-list").prepend(
-                `<div class="skills-item shadow-sm bg-white mb-1 me-1 p-2 rounded d-flex"><div class="me-2">${$("#input-skill").val()}</div><button type="button" id="add-skill" class="btn-close" aria-label="Close"></button></div>`
-            )
-
-            let skills = [];
-            $(".skills-item").each((index, element) => {
-                skills.push($(element).children()[0].textContent)
+            $(".input-employments").on('change', function() {
+                let array = [];
+                $(".input-employments").each((index, element) => {
+                    if (element.checked) array.push(element.value)
+                })
+                console.log(array)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.employments') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        employments: array,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
             })
 
-            $.ajax({
-                url: "{{ route('api.resume.edit.skills') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    skills: skills,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
+
+            $(".input-drive-category").on('change', function() {
+                let array = [];
+                $(".input-drive-category").each((index, element) => {
+                    if (element.checked) array.push(element.value)
+                })
+                console.log(array)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.driving-categories') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        categories: array,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $(".input-schedules").on('change', function() {
+                let array = [];
+                $(".input-schedules").each((index, element) => {
+                    if (element.checked) array.push(element.value)
+                })
+                console.log(array)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.schedules') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        schedules: array,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+
+            $("#add-skill").click(function() {
+                let value = $("#input-skill").val();
+                let repeat = false;
+                $(".skills-item").each((index, element) => {
+                    if ($(element).children()[0].textContent == value) repeat = true;
+                })
+                if (repeat) return;
+
+                $("#skills-list").prepend(
+                    `<div class="skills-item shadow-sm bg-white mb-1 me-1 p-2 rounded d-flex"><div class="me-2">${$("#input-skill").val()}</div><button type="button" id="add-skill" class="btn-close" aria-label="Close"></button></div>`
+                )
+
+                let skills = [];
+                $(".skills-item").each((index, element) => {
+                    skills.push($(element).children()[0].textContent)
+                })
+
+                $.ajax({
+                    url: "{{ route('api.resume.edit.skills') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        skills: skills,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+
+                // console.log()
+
+            })
+
+            $("#skills-list").click(function(e) {
+                if (!e.target.classList.contains("btn-close")) return;
+                $(e.target).parent().remove()
+
+                let skills = [];
+                $(".skills-item").each((index, element) => {
+                    skills.push($(element).children()[0].textContent)
+                })
+
+                $.ajax({
+                    url: "{{ route('api.resume.edit.skills') }}",
+                    method: 'POST',
+                    data: {
+                        resumeId: resumeId,
+                        token: token,
+                        skills: skills,
+                    },
+                    success: function(e) {
+                        console.log(e)
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
+            })
+        </script>
+    @endsection
+@else
+    @section('scripts')
+        <script>
+            $("#action").on("change", function() {
+                let value = this.value
+                if (value === 'PUBLISHED') {
+                    $("#cancel-view").addClass("visually-hidden")
+                } else {
+                    $("#cancel-view").removeClass("visually-hidden")
                 }
             })
 
-            // console.log()
-
-        })
-
-        $("#skills-list").click(function(e) {
-            if (!e.target.classList.contains("btn-close")) return;
-            $(e.target).parent().remove()
-
-            let skills = [];
-            $(".skills-item").each((index, element) => {
-                skills.push($(element).children()[0].textContent)
+            $("#btn-confirm").click(function() {
+                $.ajax({
+                    url: "{{ route('api.admin.resume.edit', ['resume' => $resume->id]) }}",
+                    method: 'POST',
+                    data: {
+                        status: $("#action").val(),
+                        cancelText: $("#cancelText").val(),
+                    },
+                    success: function(e) {
+                        console.log(e)
+                        window.location = "{{ route('admin.resume') }}"
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        for (let key in e.responseJSON.errors) {
+                            $("#" + key).addClass("is-invalid");
+                            $("#" + key).parent().find('.invalid-feedback').remove();
+                            $("#" + key).parent().append(
+                                `<div class="invalid-feedback">${e.responseJSON.errors[key]}</div>`);
+                        }
+                        // alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
             })
+        </script>
+    @endsection
 
-            $.ajax({
-                url: "{{ route('api.resume.edit.skills') }}",
-                method: 'POST',
-                data: {
-                    resumeId: resumeId,
-                    token: token,
-                    skills: skills,
-                },
-                success: function(e) {
-                    console.log(e)
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
-            })
-        })
-    </script>
-@endsection
+@endif
 
 @section('main')
-    <div class="container">
+    @if (Auth::user()->status == 'ADMIN')
+        <div class="container mb-5">
+            <a href="{{ route('admin.resume') }}" class="btn btn-outline-danger btn-sm mb-4">Назад</a>
+            <section>
+                <p>Изучите данное резюме, после либо опубликуйте, либо отмените публикацию и укажите причину отмены</p>
+                <div class="row gy-4">
+                    <div class="col-lg-12">
+                        <div>
+                            <label for="action" class="form-label">Действие</label>
+                            <select class="form-select" id="action">
+                                <option value="PUBLISHED">Подтвердить публикацию</option>
+                                <option value="CANCELED">Отменить публикацию</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="cancel-view" class="col-lg-12 visually-hidden">
+                        <div>
+                            <label for="action" class="form-label">Укажите причину отмены</label>
+                            <textarea id="cancelText" class="form-control validation"
+                                placeholder="Укажите по какой именно причине вы отменяете публикацию резюме" rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div>
+                            <button class="btn btn-danger" id="btn-confirm">Подтвердить действие</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @endif
+    <div class="container @if (Auth::user()->status == 'ADMIN') bg-white opacity-75 pe-none p-2 rounded @endif">
         <div class="d-flex flex-wrap mb-4">
             <div class="me-auto">
-                <h1 class="h2">Ваше резюме</h1>
+                <h1 class="h2">
+                    @if (Auth::user()->status == 'ADMIN')
+                        Информация о резюме
+                    @else
+                        Ваше резюме
+                    @endif
+                </h1>
             </div>
         </div>
         <section class="mb-5">
@@ -507,23 +585,11 @@
                     <div>Город проживания</div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="input-group">
-                        <input type="text" id="city" name="city"
-                            value="{{ json_decode(Cookie::get('city'))->title }}" class="form-control">
-                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button"
-                            class="border-start-0 btn btn-light border bg-white">
-                            <svg width="16" height="16" fill="silver" viewBox="0 0 32 32">
-                                <path
-                                    d="M26,16c0,1.104-0.896,2-2,2H8c-1.104,0-2-0.896-2-2s0.896-2,2-2h16C25.104,14,26,14.896,26,16z"
-                                    id="XMLID_314_" />
-                                <path
-                                    d="M26,8c0,1.104-0.896,2-2,2H8c-1.104,0-2-0.896-2-2s0.896-2,2-2h16C25.104,6,26,6.896,26,8z"
-                                    id="XMLID_315_" />
-                                <path
-                                    d="M26,24c0,1.104-0.896,2-2,2H8c-1.104,0-2-0.896-2-2s0.896-2,2-2h16C25.104,22,26,22.896,26,24z"
-                                    id="XMLID_316_" />
-                            </svg>
-                        </button>
+                    <div class="position-relative">
+                        <input type="hidden" class="input-personal" name="city" id="city">
+                        <input type="text" class="form-control validation" value="{{$resume->personal->city}}" id="city-form-input">
+                        <div class="list-group position-absolute w-100 z-3">
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -751,8 +817,8 @@
 
                 <div class="col-lg-4 hasnt-experience @if ($resume->hasExperience && !$resume->hasExperience->has) visually-hidden @endif">
                     <div>
-                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#experience-item" id="btn-add-experience-item">Добавить место работы</button>
+                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#experience-item"
+                            id="btn-add-experience-item">Добавить место работы</button>
                     </div>
                 </div>
                 <div class="col-lg-6 hasnt-experience @if ($resume->hasExperience && !$resume->hasExperience->has) visually-hidden @endif"></div>
@@ -1040,7 +1106,8 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex flex-wrap">
-                        <button class="btn btn-lg btn-primary" id="resume-publish">Сохранить и опублиновать</button>
+                        <button class="btn btn-lg btn-primary @if (Auth::user()->status == 'ADMIN') visually-hidden @endif"
+                            id="resume-publish">Сохранить и опублиновать</button>
                     </div>
                 </div>
                 <div class="col-lg-6"></div>

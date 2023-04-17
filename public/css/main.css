@@ -40,9 +40,11 @@ main {
 }
 
 .favorite-btn {
-    width: 26px;
+    width: 35px;
     cursor: pointer;
-    opacity: 0;
+    padding: 6px;
+    /* opacity: 0; */
+    fill: red;
     transition: opacity linear .1s, fill linear .1s;
 }
 
@@ -51,5 +53,5 @@ main {
 }
 
 .favorite-btn:hover {
-    fill: rgba(255, 0, 200);
+    fill: rgb(255, 255, 255);
 }

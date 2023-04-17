@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    Создание новой вакансии
+    {{ $vacancy->position }} - Редоктирование вакансии
 @endsection
 
 
@@ -10,7 +10,7 @@
     <script>
         let token = '{{ Auth::user()->api_token }}'
 
-        $("#btn-publish").click(function() {
+        $("#btn-edit").click(function() {
 
             let requirements = [],
                 pluses = [],
@@ -35,9 +35,8 @@
                 skills.push($(element).children()[0].textContent)
             })
 
-
             $.ajax({
-                url: "{{ route('api.company.vacancy.create', ['company' => $company->id]) }}",
+                url: "{{ route('api.company.vacancy.edit', ['company' => $company->id, 'vacancy' => $vacancy->id]) }}",
                 method: 'POST',
                 data: {
                     position: $("#position").val(),
@@ -129,9 +128,12 @@
     <div class="container">
         <section>
             <div class="mb-5">
-                <div class="h2">{{ $company->legal_title }} - новая вакансия</div>
-                <code class="fs-6">После создания вакансии она отправиться на проверку, дождитесь ее
-                    окончания</code>
+                <div class="h2 mb-3">{{ $company->legal_title }}, {{ $vacancy->position }} - Редоктирование вакансии</div>
+                <a href="{{ route('personal.company.vacancy.vacancy', [
+                    'company' => $company->id,
+                    'vacancy' => $vacancy->id,
+                ]) }}"
+                    class="link">Вернуться назад без изменений</a>
             </div>
             <div class="row gy-4">
                 <div class="col-lg-2">
@@ -139,7 +141,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div>
-                        <input type="text" class="form-control validation" id="position">
+                        <input type="text" class="form-control validation" value="{{ $vacancy->position }}" id="position">
                     </div>
                 </div>
                 <div class="col-lg-6"></div>
@@ -148,7 +150,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="input-group">
-                        <input type="number" id="salary" class="form-control validation">
+                        <input type="number" id="salary" class="form-control validation" value="{{ $vacancy->salary }}">
                         <span class="input-group-text">руб. на руки</span>
                     </div>
                 </div>
@@ -158,7 +160,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div>
-                        <input type="text" id="name" class="form-control validation">
+                        <input type="text" id="name" class="form-control validation" value="{{ $vacancy->name }}">
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -167,7 +169,8 @@
                 </div>
                 <div class="col-lg-3">
                     <div>
-                        <input type="text" class="form-control validation" id="surname">
+                        <input type="text" class="form-control validation" id="surname"
+                            value="{{ $vacancy->surname }}">
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -176,7 +179,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div>
-                        <input type="text" class="form-control validation" id="phone">
+                        <input type="text" class="form-control validation" id="phone" value="{{ $vacancy->phone }}">
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -185,7 +188,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div>
-                        <input type="text" class="form-control  " id="email">
+                        <input type="text" class="form-control" id="email" value="{{ $vacancy->email }}">
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -195,7 +198,7 @@
                 <div class="col-lg-3">
                     <div class="position-relative">
                         <input type="hidden" class="input-personal" name="city" id="city">
-                        <input type="text" class="form-control validation" id="city-form-input">
+                        <input type="text" class="form-control validation" id="city-form-input" value="{{$vacancy->city}}">
                         <div class="list-group position-absolute w-100 z-3">
                         </div>
                     </div>
@@ -206,7 +209,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div>
-                        <input type="text" class="form-control" id="address">
+                        <input type="text" class="form-control" id="address" value="{{ $vacancy->address }}">
                     </div>
                 </div>
                 <div class="col-lg-7"></div>
@@ -216,7 +219,7 @@
                 <div class="col-lg-4">
                     <div>
                         <textarea id="desciption" rows="5" placeholder="Опишите рабоу в целом или в чем будут обязанности работника"
-                            class="form-control"></textarea>
+                            class="form-control">{{ $vacancy->description }}</textarea>
                     </div>
                 </div>
                 <div class="col-lg-6"></div>
@@ -226,36 +229,36 @@
                 <div class="col-lg-3">
                     <div>
                         <div class="form-check">
-                            <input class="form-check-input experience" type="radio" name="experience" id="experience1"
-                                value="Не имеет значения">
+                            <input class="form-check-input experience" @if ($vacancy->experience == 'Не имеет значения') checked @endif
+                                type="radio" name="experience" id="experience1" value="Не имеет значения">
                             <label class="form-check-label" for="experience1">
                                 Не имеет значения
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input experience" type="radio" name="experience" id="experience2"
-                                value="Нет опыта">
+                            <input class="form-check-input experience" @if ($vacancy->experience == 'Нет опыта') checked @endif
+                                type="radio" name="experience" id="experience2" value="Нет опыта">
                             <label class="form-check-label" for="experience2">
                                 Нет опыта
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input experience" type="radio" name="experience" id="experience3"
-                                value="От 1 года до 3 лет">
+                            <input class="form-check-input experience" @if ($vacancy->experience == 'От 1 года до 3 лет') checked @endif
+                                type="radio" name="experience" id="experience3" value="От 1 года до 3 лет">
                             <label class="form-check-label" for="experience3">
                                 От 1 года до 3 лет
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input experience" type="radio" name="experience" id="experience4"
-                                value="От 3 лет до 6 лет">
+                            <input class="form-check-input experience" @if ($vacancy->experience == 'От 3 лет до 6 лет') checked @endif
+                                type="radio" name="experience" id="experience4" value="От 3 лет до 6 лет">
                             <label class="form-check-label" for="experience4">
                                 От 3 лет до 6 лет
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input experience" type="radio" name="experience" id="experience5"
-                                value="Более 6 лет">
+                            <input class="form-check-input experience" @if ($vacancy->experience == 'Более 6 лет') checked @endif
+                                type="radio" name="experience" id="experience5" value="Более 6 лет">
                             <label class="form-check-label" for="experience5">
                                 Более 6 лет
                             </label>
@@ -269,22 +272,22 @@
                 <div class="col-lg-3">
                     <div>
                         <div class="form-check">
-                            <input class="form-check-input education" type="radio" name="education" id="education1"
-                                value="Не требуется">
+                            <input class="form-check-input education" @if ($vacancy->education == 'Не требуется') checked @endif
+                                type="radio" name="education" id="education1" value="Не требуется">
                             <label class="form-check-label" for="education1">
                                 Не требуется
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input education" type="radio" name="education" id="education2"
-                                value="Среднее профессиональное">
+                            <input class="form-check-input education" @if ($vacancy->education == 'Среднее профессиональное') checked @endif
+                                type="radio" name="education" id="education2" value="Среднее профессиональное">
                             <label class="form-check-label" for="education2">
                                 Среднее профессиональное
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input education" type="radio" name="education" id="education3"
-                                value="Высшее">
+                            <input class="form-check-input education" @if ($vacancy->education == 'Высшее') checked @endif
+                                type="radio" name="education" id="education3" value="Высшее">
                             <label class="form-check-label" for="education3">
                                 Высшее
                             </label>
@@ -299,8 +302,9 @@
                     <div>
                         @foreach ($employments as $employ)
                             <div class="form-check">
-                                <input class="form-check-input employment" type="radio" name="employments"
-                                    value="{{ $employ->id }}" id="employment{{ $employ->id }}">
+                                <input class="form-check-input employment" @if ($employ->id == $vacancy->employment) checked @endif
+                                    type="radio" name="employments" value="{{ $employ->id }}"
+                                    id="employment{{ $employ->id }}">
                                 <label class="form-check-label" for="employment{{ $employ->id }}">
                                     {{ $employ->employment }}
                                 </label>
@@ -316,8 +320,9 @@
                     <div>
                         @foreach ($schedules as $schedule)
                             <div class="form-check">
-                                <input class="form-check-input schedule" type="radio" name="schedules"
-                                    value="{{ $schedule->id }}" id="schedules{{ $schedule->id }}">
+                                <input class="form-check-input schedule" @if ($schedule->id == $vacancy->schedule) checked @endif
+                                    type="radio" name="schedules" value="{{ $schedule->id }}"
+                                    id="schedules{{ $schedule->id }}">
                                 <label class="form-check-label" for="schedules{{ $schedule->id }}">
                                     {{ $schedule->schedule }}
                                 </label>
@@ -337,6 +342,11 @@
                             <button class="btn btn-secondary rounded-end" id="requirement-add">+</button>
                         </div>
                         <ul class="list-group interact-list" id="requirements-list">
+                            @foreach ($vacancy->requirements as $requirement)
+                                <div class="list-group-item fw-semibold d-flex justify-content-between align-items-start">
+                                    {{ $requirement->requirement }}<button type="button"
+                                        class="btn-close ms-auto"></button></div>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -351,6 +361,10 @@
                             <button class="btn btn-secondary" id="plus-add">+</button>
                         </div>
                         <ul class="list-group interact-list" id="plus-list">
+                            @foreach ($vacancy->pluses as $plus)
+                                <div class="list-group-item fw-semibold d-flex justify-content-between align-items-start ">
+                                    {{ $plus->plus }}<button type="button" class="btn-close ms-auto"></button></div>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -366,6 +380,12 @@
                             <button class="btn btn-secondary rounded-end" id="responsibilities-add">+</button>
                         </div>
                         <ul class="list-group interact-list" id="responsibilities-list">
+                            @foreach ($vacancy->responsibilities as $responsibility)
+                                <div class="list-group-item fw-semibold d-flex justify-content-between align-items-start">
+                                    {{ $responsibility->responsibility }}<button type="button"
+                                        class="btn-close ms-auto"></button>
+                                </div>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -380,6 +400,10 @@
                             <button class="btn btn-secondary" id="offers-add">+</button>
                         </div>
                         <ul class="list-group interact-list" id="offers-list">
+                            @foreach ($vacancy->offers as $offer)
+                                <div class="list-group-item fw-semibold d-flex justify-content-between align-items-start">
+                                    {{ $offer->offer }}<button type="button" class="btn-close ms-auto"></button></div>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -394,6 +418,11 @@
                             <button class="btn btn-secondary" id="skills-add">+</button>
                         </div>
                         <div class="d-flex flex-wrap interact-list" id="skills-list">
+                            @foreach ($vacancy->skills as $skill)
+                                <div class="bg-white shadow-sm rounded py-2 px-3 me-1 mb-1 d-flex align-items-start">
+                                    <span>{{ $skill->skill }}</span><button type="button" class="btn-close ms-2">
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -401,7 +430,7 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-5">
                     <div>
-                        <button class="btn btn-primary btn-lg" id="btn-publish">Сохранить и опубликовать</button>
+                        <button class="btn btn-primary btn-lg" id="btn-edit">Сохранить изменения</button>
                     </div>
                 </div>
                 <div class="col-lg-5"></div>
@@ -415,8 +444,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h3>Вакансия отправлена на модерацию!</h3>
-                    <p>Дождитесь окончания модерации вашей вакансии, вы можете увидеть статус на странице компании</p>
+                    <h3>Вакансия изменена успешно!</h3>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-sm" data-bs-dismiss="modal">Хорошо</button>

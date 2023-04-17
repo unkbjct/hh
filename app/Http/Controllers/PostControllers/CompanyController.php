@@ -15,14 +15,20 @@ class CompanyController extends Controller
         $request->validate([
             'legal_title' => 'required',
             'description' => 'min:100',
+            // 'image' => 'required',
+            'city' => 'required',
         ], [], [
             'legal_title' => 'Юридическое название компании',
             'description' => 'Описание компании',
+            // 'image' => 'Лого компании',
+            'city' => 'Город',
         ]);
+
 
         $company = new Company();
         $company->legal_title = $request->legal_title;
         $company->description = $request->description;
+        $company->city = $request->city;
         $company->address = $request->address;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images/companies', 'public');
@@ -33,6 +39,30 @@ class CompanyController extends Controller
         $companyUser->company = $company->id;
         $companyUser->user = User::where("api_token", $request->token)->first()->id;
         $companyUser->save();
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function edit(Company $company, Request $request)
+    {
+        $request->validate([
+            'legal_title' => 'required',
+            'description' => 'min:100',
+        ], [], [
+            'legal_title' => 'Юридическое название компании',
+            'description' => 'Описание компании',
+        ]);
+
+        $company->legal_title = $request->legal_title;
+        $company->description = $request->description;
+        $company->address = $request->address;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images/companies', 'public');
+            $company->image = "public/storage/{$path}";
+        }
+        if($company->status == "CANCELED") $company->status = "CREATED";
+        $company->save();
         return response([
             'status' => 'success'
         ], 200);
