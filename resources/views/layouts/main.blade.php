@@ -28,10 +28,10 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Найти работу</a>
+                                <a class="nav-link" href="{{ route('vacancy.search') }}">Найти работу</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Найти работника</a>
+                                <a class="nav-link" href="{{ route('resume.search') }}">Найти работника</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav mb-lg-0">
@@ -84,8 +84,8 @@
                                             <li>
                                                 <hr class="dropdown-divider">
 
-                                            <li><a class="dropdown-item"
-                                                    href="{{ route('personal.responses') }}">Мои отклики</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('personal.responses') }}">Мои
+                                                    отклики</a></li>
                                             <li>
                                             <li><a class="dropdown-item"
                                                     href="{{ route('personal.favorites') }}">Избранное</a></li>
