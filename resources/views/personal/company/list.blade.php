@@ -24,7 +24,10 @@
                                             <h4 class="text-primary">{{ $company->legal_title }}</h4>
                                         </a>
                                         <div>
-                                            <button class="btn btn-danger">Вакансий: {{ $company->count }}</button>
+                                            <a href="{{ route('personal.company.edit', ['company' => $company->id]) }}"
+                                                class="btn btn-primary btn-sm"> Редактировать</a>
+                                            <a href="{{ route('personal.company.vacancy.list', ['company' => $company->id]) }}"
+                                                class="btn btn-danger btn-sm">Вакансий: {{ $company->count }}</a>
                                         </div>
                                     </div>
                                 </div>

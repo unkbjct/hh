@@ -44,7 +44,52 @@ class SingleController extends Controller
     }
     public function welcome()
     {
-        return view('welcome');
+        if (!Cookie::get('city')) return redirect()->route('api.city.define');
+        $vacancies = Vacancy::where("status", "PUBLISHED")
+            ->where("city", json_decode(Cookie::get('city'))->id)
+            ->orderByDesc("id")
+            ->limit(10)
+            ->get();
+
+        $city = (City::find(json_decode(Cookie::get('city'))->id)->city)
+            ? City::find(json_decode(Cookie::get('city'))->id)->city
+            : City::find(json_decode(Cookie::get('city'))->id)->region;
+
+        if ($vacancies->isEmpty()) {
+            $city = false;
+            $vacancies = Vacancy::where("status", "PUBLISHED")->limit(10)->orderByDesc("id")->get();
+        }
+
+        $vacancies->transform(function ($item) {
+            $item->city = (City::find($item->city)->city) ? City::find($item->city)->city : City::find($item->city)->region;
+            $item->company =  Company::find($item->company);
+            return $item;
+        });
+
+        $resumes = Resume::where("status", "PUBLISHED")
+            ->join("resume_jobs", "resumes.id", "=", "resume_jobs.resume")
+            ->join("resume_personals", "resumes.id", "=", "resume_personals.resume")
+            ->join("resume_experiences", "resumes.id", "=", "resume_experiences.resume")
+            ->select("resumes.*", "resume_jobs.title as position", "resume_jobs.salary")
+            ->addSelect("resume_personals.name", "resume_personals.surname", "resume_personals.city", "resume_personals.gender")
+            ->addSelect("resume_personals.birthday_month", "resume_personals.birthday_year", "resume_personals.birthday_day")
+            ->get();
+
+        $resumes->transform(function ($item) {
+            $item->city = (City::find($item->city)->city) ? City::find($item->city)->city : City::find($item->city)->region;
+            $item->hasExperience = (Experience_item::where("resume", $item->id)->first()) ? 1 : 0;
+            return $item;
+        });
+
+
+
+        // dd($city);
+
+        return view('welcome', [
+            'vacancies' => $vacancies,
+            'resumes' => $resumes,
+            'city' => $city,
+        ]);
     }
 
 
@@ -250,5 +295,10 @@ class SingleController extends Controller
             'employments' => $employments,
             'schedules' => $schedules,
         ]);
+    }
+
+    public function aboutResponses()
+    {
+        return view("about.responses");
     }
 }

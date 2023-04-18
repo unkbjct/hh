@@ -33,6 +33,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('resume.search') }}">Найти работника</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('about.responses') }}">Как работают отклики?</a>
+                            </li>
                         </ul>
                         <ul class="navbar-nav mb-lg-0">
                             <li class="nav-item me-5">
@@ -190,74 +193,93 @@
 
 
         </main>
-        <footer class="border-top">
+        <footer class="border-top bg-danger-subtle">
             <div class="container">
                 <div class="pt-5">
                     <div class="row">
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
+                            <h5>WantWork</h5>
                             <ul class="nav flex-column">
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Home</a></li>
+                                        class="nav-link p-0 text-body-secondary">О компании</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Features</a></li>
+                                        class="nav-link p-0 text-body-secondary">Наши вакансии</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                                        class="nav-link p-0 text-body-secondary">Реклама на сайте</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                                        class="nav-link p-0 text-body-secondary">Требования к ПО</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">About</a></li>
+                                        class="nav-link p-0 text-body-secondary">Защита персональных данных</a></li>
+                                <li class="nav-item mb-2"><a href="#"
+                                        class="nav-link p-0 text-body-secondary">Безопасынй WantWork</a></li>
+                                <li class="nav-item mb-2"><a href="#"
+                                        class="nav-link p-0 text-body-secondary">Партнерам</a></li>
+                                <li class="nav-item mb-2"><a href="#"
+                                        class="nav-link p-0 text-body-secondary">Условия оказания услуг</a></li>
+                                <li class="nav-item mb-2"><a href="#"
+                                        class="nav-link p-0 text-body-secondary">Условия использования сайта</a></li>
                             </ul>
                         </div>
 
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
+                            <h5>Серсвисы для соискателей</h5>
                             <ul class="nav flex-column">
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Home</a></li>
+                                        class="nav-link p-0 text-body-secondary">Готовые резюме</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Features</a></li>
+                                        class="nav-link p-0 text-body-secondary">Профориентация</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                                        class="nav-link p-0 text-body-secondary">Продвижение резюме</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">FAQs</a></li>
-                                <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">About</a></li>
+                                        class="nav-link p-0 text-body-secondary">Производственный календарь</a></li>
                             </ul>
                         </div>
 
                         <div class="col-6 col-md-2 mb-3">
-                            <h5>Section</h5>
                             <ul class="nav flex-column">
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Home</a></li>
+                                        class="nav-link p-0 text-body-secondary">Поиск сотрудников</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Features</a></li>
+                                        class="nav-link p-0 text-body-secondary">Помошь</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                                        class="nav-link p-0 text-body-secondary">Пользовательское соглашение</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                                        class="nav-link p-0 text-body-secondary">Каталог компаний</a></li>
                                 <li class="nav-item mb-2"><a href="#"
-                                        class="nav-link p-0 text-body-secondary">About</a></li>
+                                        class="nav-link p-0 text-body-secondary">Работа с процессиям</a></li>
                             </ul>
                         </div>
 
                         <div class="col-md-5 offset-md-1 mb-3">
-                            <form>
-                                <h5>Subscribe to our newsletter</h5>
-                                <p>Monthly digest of what's new and exciting from us.</p>
-                                <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-                                    <label for="newsletter1" class="visually-hidden">Email address</label>
-                                    <input id="newsletter1" type="text" class="form-control"
-                                        placeholder="Email address">
-                                    <button class="btn btn-danger" type="button">Subscribe</button>
-                                </div>
-                            </form>
+                            <div class="d-flex flex-wrap">
+                                <div class="display-2 fw-bold bg-danger px-4 py-3 text-white rounded-5">WantWork</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gy-4">
+                        <div class="col-lg-4">
+                            <a href="" class="text-decoration-none text-secondary me-1 mb-2">Telegram</a>
+                            <a href="" class="text-decoration-none text-secondary me-1 mb-2">Vkontakte</a>
+                            <a href="" class="text-decoration-none text-secondary me-1 mb-2">Одноклассники</a>
+                            <a href="" class="text-decoration-none text-secondary me-1 mb-2">Gmail</a>
+                        </div>
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-6">
+                            <div>
+                                <a href="" class="text-decoration-none">
+                                    <img src="{{ asset('public/storage/images/badges/appstore.svg') }}"
+                                        alt="">
+                                </a>
+                                <a href="" class="text-decoration-none">
+                                    <img src="{{ asset('public/storage/images/badges/googleplay.svg') }}"
+                                        alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <div class="d-flex flex-column flex-sm-row justify-content-between pt-4 mt-4 border-top">
-                        <p>© 2023 Company, Inc. All rights reserved.</p>
+                        <p>© 2023 WantWork company</p>
                         <ul class="list-unstyled d-flex">
                             <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi"
                                         width="24" height="24">

@@ -34,7 +34,11 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        $company->city = City::find($company->city);
+        $company->cityId = $company->city;
+        $company->city = (City::find($company->city)->city)
+            ? City::find($company->city)->city
+            : City::find($company->city)->region;
+
         return view('personal.company.edit', [
             'company' => $company,
         ]);

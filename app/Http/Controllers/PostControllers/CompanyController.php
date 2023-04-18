@@ -56,6 +56,7 @@ class CompanyController extends Controller
 
         $company->legal_title = $request->legal_title;
         $company->description = $request->description;
+        $company->city = $request->city;
         $company->address = $request->address;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('images/companies', 'public');

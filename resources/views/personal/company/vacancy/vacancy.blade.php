@@ -186,7 +186,7 @@
                         </a>
                         <div class="h5">{{ $company->city->city }}</div>
                     </div>
-                    <div class="mb-4">Работа в <span class="h5">{{ $vacancy->city }}</span></div>
+                    <div class="mb-4">Работа в городе <span class="h5">{{ $vacancy->city }}</span></div>
                     <div class="d-flex">
                         <div
                             @guest data-bs-toggle="tooltip" data-bs-title="Авторизуйтель чтобы была возможность откликнуться на вакансию" @endguest>

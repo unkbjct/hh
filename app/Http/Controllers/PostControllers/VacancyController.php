@@ -137,6 +137,7 @@ class VacancyController extends Controller
         $vacancy->name = $request->name;
         $vacancy->phone = $request->phone;
         $vacancy->email = $request->email;
+        $vacancy->city = $request->city;
         $vacancy->address = $request->address;
         $vacancy->description = $request->desciption;
         $vacancy->experience = $request->experience;

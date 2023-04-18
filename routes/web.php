@@ -70,6 +70,7 @@ Route::get('/company/{company}/vacancy/{vacancy}', [VacancyViews::class, 'vacanc
 Route::get('/search/vacancy', [SingleViews::class, 'vacancySearch'])->name('vacancy.search');
 Route::get('/resume/{resume}', [SingleViews::class, 'resume'])->name('resume');
 Route::get('/search/resume', [SingleViews::class, 'resumeSearch'])->name('resume.search');
+Route::get('/about/responses', [SingleViews::class, 'aboutResponses'])->name('about.responses');
 
 
 Route::group(['prefix' => 'admin'], function () {

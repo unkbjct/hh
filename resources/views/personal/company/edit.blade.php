@@ -13,6 +13,7 @@
             formData.append("image", $("#image")[0].files[0])
             formData.append("token", token)
             formData.append("legal_title", $("#legal_title").val())
+            formData.append("city", $("#city").val())
             formData.append("address", $("#address").val())
             formData.append("description", $("#description").val())
             $.ajax({
@@ -103,6 +104,19 @@
                     </div>
                 </div>
                 <div class="col-lg-4"></div>
+                <div class="col-lg-2">
+                    <div>Город</div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="position-relative">
+                        <input type="hidden" class="input-personal" name="city" value="{{$company->cityId}}" id="city">
+                        <input type="text" class="form-control validation" value="{{ $company->city }}"
+                            id="city-form-input">
+                        <div class="list-group position-absolute w-100 z-3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7"></div>
                 <div class="col-lg-2">
                     <div>Адрес</div>
                 </div>
