@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class PersonalController extends Controller
@@ -55,9 +56,18 @@ class PersonalController extends Controller
             'login' => 'required',
             'passwd' => 'required',
         ], [], [
-            'login' => '',
-            'passwd' => '',
+            'login' => 'Почта или Телефон',
+            'passwd' => 'Пароль',
         ]);
+        // $validator = Validator::make(request()->all(), [
+        //     'login' => 'required',
+        //     'passwd' => 'required',
+        // ], [], [
+        //     'login' => 'Логин',
+        //     'passwd' => 'Пароль',
+        // ]);
+        // if ($validator->fails())
+        //     return response($validator->errors(), 400);
 
         if (Auth::attempt(['password' => $request->passwd, 'email' => $request->login], true) || Auth::attempt(['password' => $request->passwd, 'phone' => $request->login], true)) {
             // dd(Auth::user()->remeber_token);
