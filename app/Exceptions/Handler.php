@@ -53,7 +53,10 @@ class Handler extends ExceptionHandler
         if ($e->response) {
             return $e->response;
         }
-
-        return response()->json($e->validator->errors()->getMessages(), 422);
+        $errors = [];
+        foreach ($e->validator->errors()->getMessages() as $key => $err) {
+            $errors[$key] = $err[0];
+        }
+        return response()->json(['errors' => $errors], 422);
     }
 }
