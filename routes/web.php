@@ -12,8 +12,6 @@ use App\Http\Controllers\PostControllers\CompanyController as CompanyCore;
 use App\Http\Controllers\PostControllers\ResumeController as ResumeCore;
 use App\Http\Controllers\PostControllers\SingleController as SingleCore;
 use App\Http\Controllers\PostControllers\VacancyController as VacancyCore;
-use Facade\FlareClient\Api;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -98,16 +96,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/personal/edit', [PersonalCore::class, 'edit'])->name('api.personal.edit');
     Route::post('/password/edit', [PersonalCore::class, 'editPassword'])->name('api.password.edit');
 
-    Route::post('/search/vacancies', [ApiGet::class, 'searchVacancies']);
-    Route::post('/search/resumes', [ApiGet::class, 'searchResumes']);
-    
-    Route::post('/companies', [ApiGet::class, 'companies']);
-    Route::post('/responses', [ApiGet::class, 'responses']);
-
-    Route::post('/resume/{resume}', [ApiGet::class, 'resume']);
-    Route::post('/company/{company}/', [ApiGet::class, 'company']);
-    Route::post('/company/{company}/vacancy/{vacancy}', [ApiGet::class, 'vacancy']);
-
     Route::group(['prefix' => 'resume'], function () {
         Route::post('/resume/create', [ResumeCore::class, 'create'])->name('api.resume.create');
         Route::group(['prefix' => 'edit'], function () {
@@ -156,4 +144,15 @@ Route::group(['prefix' => 'api'], function () {
     });
 
     Route::post('/favorite', [SingleCore::class, 'favorite'])->name('favorite');
+
+
+    Route::post('/search/vacancies', [ApiGet::class, 'searchVacancies']);
+    Route::post('/search/resumes', [ApiGet::class, 'searchResumes']);
+    
+    Route::post('/companies', [ApiGet::class, 'companies']);
+    Route::post('/responses', [ApiGet::class, 'responses']);
+
+    Route::post('/resume/{resume}', [ApiGet::class, 'resume']);
+    Route::post('company/{company}/', [ApiGet::class, 'company']);
+    Route::post('bug/company/{company}/vacancy/{vacancy}', [ApiGet::class, 'vacancy']);
 });

@@ -110,6 +110,7 @@ class ApiController extends Controller
         }
 
         $vacancies->transform(function ($item) {
+            $item->city = (City::find($item->city)->city) ? City::find($item->city)->city : City::find($item->city)->region;
             $item->company =  Company::find($item->company);
             return $item;
         });
