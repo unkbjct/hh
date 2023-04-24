@@ -19,6 +19,7 @@ use App\Models\Resume_personal;
 use App\Models\Resume_schedule;
 use App\Models\Resume_skill;
 use App\Models\Schedule;
+use App\Models\User;
 use App\Models\User_response;
 use App\Models\Vacancy;
 use App\Models\Vacancy_offer;
@@ -341,4 +342,26 @@ class ApiController extends Controller
             ],
         ], 200);
     }
+
+
+    public function personalResumes(Request $request)
+    {
+        $user = User::where("api_token", $request->apiToren)->first();
+        $resumes = Resume::where("user", $user->id)->get();
+
+        $resumes->transform(function ($resume) {
+            $resume->job = Resume_job::where("resume", $resume->id)->first();
+            return $resume;
+        });
+
+        return response([
+            'status' => 'success',
+            'data' => [
+                'resumes' => $resumes,
+            ],
+        ], 200);
+    }
+
+
+
 }

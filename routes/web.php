@@ -148,11 +148,15 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::post('/search/vacancies', [ApiGet::class, 'searchVacancies']);
     Route::post('/search/resumes', [ApiGet::class, 'searchResumes']);
-    
+
     Route::post('/companies', [ApiGet::class, 'companies']);
     Route::post('/responses', [ApiGet::class, 'responses']);
 
     Route::post('/resume/{resume}', [ApiGet::class, 'resume']);
     Route::post('company/{company}/', [ApiGet::class, 'company']);
     Route::post('bug/company/{company}/vacancy/{vacancy}', [ApiGet::class, 'vacancy']);
+
+    Route::group(['prefix' => 'personal'], function () {
+        Route::post('/resumes', [ApiGet::class, 'personalResumes']);
+    });
 });
