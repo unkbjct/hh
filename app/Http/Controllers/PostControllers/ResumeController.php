@@ -25,7 +25,7 @@ class ResumeController extends Controller
 {
     public function create(Request $request)
     {
-        $user = User::find("api_token", $request->apiToken)->first();
+        $user = User::where("api_token", $request->apiToken)->first();
 
         $resume = new Resume();
         $resume->user = $user->id;
