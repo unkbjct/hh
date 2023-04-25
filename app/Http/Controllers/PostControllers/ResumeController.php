@@ -25,20 +25,22 @@ class ResumeController extends Controller
 {
     public function create(Request $request)
     {
+        $user = User::find("api_token", $request->apiToken)->first();
+
         $resume = new Resume();
-        $resume->user = Auth::user()->id;
+        $resume->user = $user->id;
         $resume->save();
         $personal = new Resume_personal();
 
-        $personal->name = Auth::user()->name;
+        $personal->name = $user->name;
         $personal->resume = $resume->id;
-        $personal->surname = Auth::user()->surname;
+        $personal->surname = $user->surname;
         $personal->city = json_decode(Cookie::get('city'))->id;
         $personal->save();
 
         $contants = new Resume_contact();
         $contants->resume = $resume->id;
-        $contants->phone = Auth::user()->phone;
+        $contants->phone = $user->phone;
         $contants->save();
 
         $experience = new Resume_experience();
