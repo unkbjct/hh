@@ -210,7 +210,10 @@ class ResumeController extends Controller
         $education->save();
 
         return response([
-            'status' => 'success'
+            'status' => 'success',
+            'data' => [
+                'education' => $education
+            ]
         ], 200);
     }
 
