@@ -27,6 +27,8 @@ class ResumeController extends Controller
     {
         $user = User::where("api_token", $request->apiToken)->first();
 
+        // return $request->apiToken;
+
         $resume = new Resume();
         $resume->user = $user->id;
         $resume->save();
@@ -430,7 +432,7 @@ class ResumeController extends Controller
     public function remove(Request $request)
     {
         $resume = Resume::find($request->resumeId);
-
+        // return User::where("api_token", $request->token)->first();
         if (!User::where("api_token", $request->token)->first() || $resume->user != User::where("api_token", $request->token)->first()->id) return response('', 404);
         Resume_job::where("resume", $resume->id)->delete();
         Resume_contact::where("resume", $resume->id)->delete();

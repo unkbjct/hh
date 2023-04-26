@@ -347,7 +347,7 @@ class ApiController extends Controller
     public function personalResumes(Request $request)
     {
         $user = User::where("api_token", $request->apiToren)->first();
-        $resumes = Resume::where("user", $user->id)->get();
+        $resumes = Resume::where("user", $user->id)->get()->orderByDesc("id");
 
         $resumes->transform(function ($resume) {
             $resume->job = Resume_job::where("resume", $resume->id)->first();
