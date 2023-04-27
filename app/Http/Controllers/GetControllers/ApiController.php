@@ -362,4 +362,23 @@ class ApiController extends Controller
             ],
         ], 200);
     }
+
+    public function vacancyInfo(Vacancy $vacancy)
+    {
+        $vacancy->requirements = Vacancy_requirement::where("vacancy", $vacancy->id)->get();
+        $vacancy->responsibilities = Vacancy_responsibility::where("vacancy", $vacancy->id)->get();
+        $vacancy->offers = Vacancy_offer::where("vacancy", $vacancy->id)->get();
+        $vacancy->skills = Vacancy_skill::where("vacancy", $vacancy->id)->get();
+        $vacancy->pluses = Vacancy_plus::where("vacancy", $vacancy->id)->get();
+        $vacancy->employment = Employment::find($vacancy->employment);
+        $vacancy->schedule = Schedule::find($vacancy->schedule);
+        $vacancy->city = City::find($vacancy->city)->city;
+
+        return response([
+            'status' => 'success',
+            'data' => [
+                'vacancy' => $vacancy,
+            ],
+        ], 200);
+    }
 }

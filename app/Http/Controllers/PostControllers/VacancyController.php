@@ -33,7 +33,7 @@ class VacancyController extends Controller
             'city' => 'Город',
             'phone' => 'Телефон',
             'requirements' => 'Требования',
-            'responsibilities' => 'Ключевые навыки',
+            'responsibilities' => 'Обязанности',
         ]);
 
         $vacancy = new Vacancy();
