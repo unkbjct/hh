@@ -315,7 +315,7 @@ class ApiController extends Controller
         ], 200);
     }
 
-    public function responses()
+    public function personalResponses()
     {
         $vacancies = Vacancy::join("user_responses", "vacancies.id", "=", "user_responses.vacancy")
             ->where("user", Auth::user()->id)
@@ -344,6 +344,34 @@ class ApiController extends Controller
         ], 200);
     }
 
+    public function responses(Company $company, Vacancy $vacancy)
+    {
+        $responses = User_response::where("vacancy", $vacancy->id)
+            ->join("users", "user_responses.user", "=", "users.id")
+            ->select("users.*", "user_responses.user", "user_responses.vacancy", "user_responses.id as responseId");
+
+        $responses = $responses->get();
+
+        $responses->transform(function ($item) {
+            $item->resumes = Resume::where("user", $item->user)->where("status", "PUBLISHED")
+                ->join("resume_jobs", "resumes.id", "=", "resume_jobs.resume")
+                ->join("resume_personals", "resumes.id", "=", "resume_personals.resume")
+                ->join("resume_contacts", "resumes.id", "=", "resume_contacts.resume")
+                ->select("resumes.*", "resume_jobs.title as position", "resume_personals.name", "resume_personals.surname", "resume_personals.city")
+                ->addSelect("resume_contacts.phone", "resume_contacts.email", "resume_contacts.telegram", "resume_contacts.recomended")
+                ->get();
+
+            return $item;
+        });
+
+        // dd($responses[0]);
+
+        return view('personal.company.vacancy.responses', [
+            'company' => $company,
+            'vacancy' => $vacancy,
+            'responses' => $responses,
+        ]);
+    }
 
     public function personalResumes(Request $request)
     {
