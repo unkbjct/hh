@@ -156,6 +156,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/resume/{resume}', [ApiGet::class, 'resume']);
     Route::post('company/{company}/', [ApiGet::class, 'company']);
     Route::post('bug/company/{company}/vacancy/{vacancy}', [ApiGet::class, 'vacancy']);
+    Route::post('vacancy/{vacancy}', [ApiGet::class, 'vacancyInfo']);
 
     Route::group(['prefix' => 'personal'], function () {
         Route::post('/resumes', [ApiGet::class, 'personalResumes']);
