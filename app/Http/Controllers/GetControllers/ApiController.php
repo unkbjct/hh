@@ -240,7 +240,7 @@ class ApiController extends Controller
         $companies = Company_user::where("user", Auth::user()->id)
             ->join("companies", "company_users.company", "=", "companies.id")
             // ->join("users", "company_users.user", "=", "users.id")
-            ->orderByDesc("id")
+            ->orderByDesc("companies.id")
             ->get();
         $companies->transform(function ($item) {
             $item->count = Vacancy::where("company", $item->id)->count();
