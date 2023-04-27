@@ -411,4 +411,26 @@ class ApiController extends Controller
             ],
         ], 200);
     }
+
+    public function vacanciesRange(Request $request)
+    {
+        $vacancies = Vacancy::where("status", "PUBLISHED")->ordereByDesc("id");
+
+        $vacancies->whereIn("id", $request->indexes);
+
+        $vacancies = $vacancies->get();
+
+        $vacancies->transform(function ($item) {
+            $item->city = (City::find($item->city)->city) ? City::find($item->city)->city : City::find($item->city)->region;
+            $item->company =  Company::find($item->company);
+            return $item;
+        });
+
+        return response([
+            'status' => 'success',
+            'data' => [
+                'vacancies' => $vacancies,
+            ],
+        ], 200);
+    }
 }
