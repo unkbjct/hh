@@ -372,7 +372,7 @@ class ApiController extends Controller
         $vacancy->pluses = Vacancy_plus::where("vacancy", $vacancy->id)->get();
         $vacancy->employment = Employment::find($vacancy->employment);
         $vacancy->schedule = Schedule::find($vacancy->schedule);
-        $vacancy->city = City::find($vacancy->city)->city;
+        $vacancy->city = City::find($vacancy->city);
 
         return response([
             'status' => 'success',
