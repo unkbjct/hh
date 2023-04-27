@@ -414,7 +414,7 @@ class ApiController extends Controller
 
     public function vacanciesRange(Request $request)
     {
-        $vacancies = Vacancy::where("status", "PUBLISHED")->ordereByDesc("id");
+        $vacancies = Vacancy::where("status", "PUBLISHED")->orderByDesc("id");
 
         $vacancies->whereIn("id", $request->indexes);
 
