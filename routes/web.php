@@ -161,6 +161,6 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::group(['prefix' => 'personal'], function () {
         Route::post('/resumes', [ApiGet::class, 'personalResumes']);
-        Route::post('/responses', [ApiGet::class, 'responses']);
+        Route::post('/responses', [ApiGet::class, 'personalResponses']);
     });
 });
