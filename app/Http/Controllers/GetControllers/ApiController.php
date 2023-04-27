@@ -365,12 +365,14 @@ class ApiController extends Controller
         });
 
         // dd($responses[0]);
-
-        return view('personal.company.vacancy.responses', [
-            'company' => $company,
-            'vacancy' => $vacancy,
-            'responses' => $responses,
-        ]);
+        return response([
+            'status' => 'success',
+            'data' => [
+                'company' => $company,
+                'vacancy' => $vacancy,
+                'responses' => $responses,
+            ],
+        ], 200);
     }
 
     public function personalResumes(Request $request)
