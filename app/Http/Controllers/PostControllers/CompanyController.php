@@ -62,8 +62,16 @@ class CompanyController extends Controller
             $path = $request->file('image')->store('images/companies', 'public');
             $company->image = "public/storage/{$path}";
         }
-        if($company->status == "CANCELED") $company->status = "CREATED";
+        if ($company->status == "CANCELED") $company->status = "CREATED";
         $company->save();
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function remove(Company $company)
+    {
+        $company->delete();
         return response([
             'status' => 'success'
         ], 200);

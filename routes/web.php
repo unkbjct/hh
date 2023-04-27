@@ -128,6 +128,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::group(['prefix' => 'company'], function () {
         Route::post('/create', [CompanyCore::class, 'create'])->name('api.company.create');
         Route::post('/{company}/edit', [CompanyCore::class, 'edit'])->name('api.company.edit');
+        Route::post('/{company}/remove', [CompanyCore::class, 'remove'])->name('api.company.remove');
         Route::group(['prefix' => '{company}/vacancy/'], function () {
             Route::post('/create', [VacancyCore::class, 'create'])->name('api.company.vacancy.create');
             Route::post('/{vacancy}/edit', [VacancyCore::class, 'edit'])->name('api.company.vacancy.edit');
