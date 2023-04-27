@@ -47,11 +47,11 @@ class VacancyController extends Controller
         $vacancy->email = $request->email;
         $vacancy->address = $request->address;
         $vacancy->description = $request->desciption;
-        $vacancy->experience = $request->experience;
+        $vacancy->experience = ($request->experience) ? $request->experience : "Не имеет значения";
         $vacancy->city = $request->city;
-        $vacancy->education = $request->education;
-        $vacancy->employment = $request->employment;
-        $vacancy->schedule = $request->schedule;
+        $vacancy->education = ($request->education) ? $request->experience : "Не требуется";
+        $vacancy->employment = ($request->employment) ? $request->employment : 1;
+        $vacancy->schedule = ($request->schedule) ? $request->schedule : 1;
         $vacancy->save();
 
         if ($request->has('offers')) {
