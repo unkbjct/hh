@@ -239,10 +239,10 @@ class SingleController extends Controller
             ->addSelect("resume_experiences.has as has_experience")
             ->addSelect("resume_personals.birthday_month", "resume_personals.birthday_year", "resume_personals.birthday_day");
 
-        if ($request->has('position') && $request->position) $resumes->where("position", "LIKE", "%{$request->position}%");
+        if ($request->has('position') && $request->position) $resumes->where("resume_jobs.title", "LIKE", "%{$request->position}%");
 
         if ($request->has('education') && $request->education) $resumes->whereIn("education_level", $request->education);
-        if ($request->has('experience') && $request->experience) $resumes->whereIn("has_experience", $request->experience);
+        if ($request->has('experience') && $request->experience) $resumes->whereIn("resume_experiences.has", $request->experience);
         if ($request->has('employments') && $request->employments) {
             $tempEmployments = Resume_employment::whereIn("employment", $request->employments)->select("resume")->distinct('resume')->get();
             $employments = [];
