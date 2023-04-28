@@ -38,7 +38,7 @@ class PersonalController extends Controller
         $user->api_token = Str::random(60);
         $user->save();
 
-        if (Auth::attempt(['password' => $request->passwd, 'email' => $request->email])) {
+        if (Auth::attempt(['password' => $request->passwd, 'email' => $request->email], true)) {
             return response([
                 'status' => 'success',
                 'data' => [
