@@ -4,35 +4,37 @@
     Резюме {{ $resume->job->title }}
 @endsection
 
-@section('scripts')
-    <script>
-        let resumeId = {{ $resume->id }}
-        let token = '{{ Auth::user()->api_token }}'
+@auth
+    @section('scripts')
+        <script>
+            let resumeId = {{ $resume->id }}
+            let token = '{{ Auth::user()->api_token }}'
 
-        $("#change-image").on("change", function() {
-            console.log(this.name, this.files)
-            let formData = new FormData();
-            formData.append("image", this.files[0])
-            formData.append("resumeId", resumeId)
-            formData.append("token", token)
-            $.ajax({
-                url: "{{ route('api.resume.edit.image') }}",
-                method: 'POST',
-                processData: false,
-                contentType: false,
-                data: formData,
-                success: function(e) {
-                    console.log(e)
-                    location.reload();
-                },
-                error: function(e) {
-                    console.log(e)
-                    alert('Что-то пошло не так \nПопробуйте позже')
-                }
+            $("#change-image").on("change", function() {
+                console.log(this.name, this.files)
+                let formData = new FormData();
+                formData.append("image", this.files[0])
+                formData.append("resumeId", resumeId)
+                formData.append("token", token)
+                $.ajax({
+                    url: "{{ route('api.resume.edit.image') }}",
+                    method: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function(e) {
+                        console.log(e)
+                        location.reload();
+                    },
+                    error: function(e) {
+                        console.log(e)
+                        alert('Что-то пошло не так \nПопробуйте позже')
+                    }
+                })
             })
-        })
-    </script>
-@endsection
+        </script>
+    @endsection
+@endauth
 
 
 @section('main')
@@ -99,11 +101,31 @@
                                 <span>{{ $resume->city }}, </span>
                                 <span>
                                     @switch($resume->personal->moving)
-                                        @case('cant')к переезду не готов@break @case('can')может переехать@break @default желает переехать@endswitch,
+                                        @case('cant')
+                                            к переезду не готов
+                                        @break
+
+                                        @case('can')
+                                            может переехать
+                                        @break
+
+                                        @default
+                                            желает переехать
+                                    @endswitch,
                                 </span>
                                 <span>
                                     @switch($resume->personal->trips)
-                                        @case('never')не готов к командировкам@break @case('ready')готов к командировкам@break @default иногда может ездить в командировки@endswitch.
+                                        @case('never')
+                                            не готов к командировкам
+                                        @break
+
+                                        @case('ready')
+                                            готов к командировкам
+                                        @break
+
+                                        @default
+                                            иногда может ездить в командировки
+                                    @endswitch.
                                 </span>
                                 @if (Auth::check() && $resume->user === Auth::user()->id)
                                     <div><small><a
@@ -114,9 +136,8 @@
                         </div>
                         <div class="">
                             @if ($resume->image)
-                                <img class="border-primary-subtle border border-2 w-100 rounded-1 shadow" style="max-width: 130px"
-                                    src="{{asset($resume->image)}}"
-                                    alt="">
+                                <img class="border-primary-subtle border border-2 w-100 rounded-1 shadow"
+                                    style="max-width: 130px" src="{{ asset($resume->image) }}" alt="">
                             @else
                                 @if ($resume->personal->gender === 'MALE')
                                     <div class="border-primary-subtle border border-2 shadow-sm rounded-1">
@@ -161,7 +182,7 @@
                         <div class="mb-5">
                             <div class="d-flex align-items-center mb-3">
                                 <h2 class="me-auto">{{ $resume->job->title }}</h2>
-                                <h3>{{ number_format($resume->job->salary, 0, 0, " ") }} руб. на руки</h3>
+                                <h3>{{ number_format($resume->job->salary, 0, 0, ' ') }} руб. на руки</h3>
                             </div>
                             <div class="mb-3">
                                 <div class="mb-3"><span class="fw-semibold">Занятость:</span>

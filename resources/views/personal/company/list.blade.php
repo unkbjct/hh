@@ -6,7 +6,7 @@
             <div class="mb-5">
                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
                     <div class="h2">Компании</div>
-                    <a href="{{ route('personal.company.create') }}" class="btn btn-primary btn-sm">Доюавить компанию на
+                    <a href="{{ route('personal.company.create') }}" class="btn btn-primary btn-sm">Добавить компанию на
                         сайт</a>
                 </div>
                 <div>Для того чтобы создать вакансию, вам необходимо сначала создать компанию.</div>
