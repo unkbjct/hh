@@ -1107,7 +1107,7 @@
                 <div class="col-lg-4">
                     <div class="d-flex flex-wrap">
                         <button class="btn btn-lg btn-primary @if (Auth::user()->status == 'ADMIN') visually-hidden @endif"
-                            id="resume-publish">Сохранить и опублиновать</button>
+                            id="resume-publish">Сохранить и опубликовать</button>
                     </div>
                 </div>
                 <div class="col-lg-6"></div>

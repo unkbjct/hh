@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PostController;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -90,6 +91,7 @@ class PersonalController extends Controller
 
     public function edit(Request $request)
     {
+
         $request->validate([
             'name' => 'required',
             'surname' => 'required',
